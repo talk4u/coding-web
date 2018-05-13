@@ -6,7 +6,7 @@ import {appbar_height, max_width} from '../var'
 import {darkTheme, defaultTheme} from "./theme";
 
 
-const AppBarContainer = styled.div`
+export const AppBarContainer = styled.div`
     position: fixed;
     width: 100%;
     height: ${appbar_height}px;

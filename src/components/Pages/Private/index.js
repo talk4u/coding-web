@@ -8,7 +8,7 @@ import styled, {ThemeProvider} from 'styled-components'
 import {darkTheme} from "../../Layouts/AppBar/theme";
 import {Route, withRouter, Redirect, Switch} from "react-router-dom";
 import Gym from "../Gym";
-import Problem from "../Problem";
+import Problem from "../Problem/index.ignore";
 
 
 
@@ -48,8 +48,8 @@ export class PrivateView extends React.Component{
 }
 
 
-const Private =  withRouter(connect(
+const Private =  connect(
     null,
     mapDispatchToProps
-)(PrivateView))
+)(PrivateView)
 export default Private

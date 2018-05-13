@@ -1,15 +1,13 @@
 import { combineReducers } from 'redux'
 
 import authReducer from './auth'
-import userReducer from './user'
 import gymReducer from './gym'
-import problemReducer from './problem'
+import problemReducer from './problem.ignore'
 
 
 
 const appReducer = combineReducers({
     authReducer,
-    userReducer,
     gymReducer,
     problemReducer,
 });

@@ -1,7 +1,7 @@
 import { delay } from 'redux-saga'
 import { all, call, fork, put, take, cancel, cancelled, takeLatest } from 'redux-saga/effects'
 import Api from '../config/Api'
-import {types as actionType, problemBodyFetchFail, problemBodyFetchSuccess} from "../actions/problem";
+import {types as actionType, problemBodyFetchFail, problemBodyFetchSuccess} from "../actions/problem.ignore";
 
 
 function* fetchProblemBodyAsync() {
