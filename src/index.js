@@ -15,7 +15,7 @@ import { Home, Sign, Private, PrivateRoute } from './components/Pages'
 /* SERVICES */
 import registerServiceWorker from './registerServiceWorker';
 import store from './store'
-import connect from "react-redux/es/connect/connect";
+import {connect} from "react-redux";
 import {authVerify} from "./actions/auth";
 
 

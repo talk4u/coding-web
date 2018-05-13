@@ -33,10 +33,10 @@ export const gymDetailFetchRequested = () => {
     }
 }
 
-export const gymDetailFetchSuccess = (gymList) => {
+export const gymDetailFetchSuccess = (gym) => {
     return {
         type: types.DETAIL_FETCH_SUCCESS,
-        payload: gymList
+        payload: gym
     }
 }
 

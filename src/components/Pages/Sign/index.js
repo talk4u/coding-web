@@ -7,7 +7,7 @@ import {Form} from 'semantic-ui-react'
 import AppContent from "../../Layouts/AppContent";
 import AppBar from "../../Layouts/AppBar";
 
-const SignPlane = styled(Form)`
+export const SignPlane = styled(Form)`
     padding: 1rem 3rem;
     background: #fff;
 `
@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-class SignView extends React.Component{
+export class SignView extends React.Component{
     constructor(props){
         super(props)
         this.state = {

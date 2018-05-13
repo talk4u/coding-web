@@ -1,4 +1,4 @@
-import * as axios from "axios";
+import axios from "axios";
 import apiConfig from "../config"
 
 const fetchApi = (endPoint, payload={}, method='get', headers={}, contentType='application/json') => {

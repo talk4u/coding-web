@@ -4,6 +4,7 @@ import {shallow} from 'enzyme';
 import configureStore from 'redux-mock-store';
 import Adapter from 'enzyme-adapter-react-16';
 import Enzyme from "enzyme";
+import {gymDetailFetchRequested, gymListFetchRequested} from "../../../actions/gym";
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -38,16 +39,37 @@ describe('GymProblem Shallow render', () => {
 
     }
 
-    beforeEach(()=>{
-        store = mockStore(initialState);
-        container = shallow(<GymProblem store={store} /> );
-        dumb = shallow(<GymProblemsView gym={processed_gym} fetchGym={()=>[]} match={{url:''}}/>)
+    describe('with auth True', () => {
+        beforeEach(() => {
+            store = mockStore(initialState);
+            container = shallow(<GymProblem store={store}/>);
+            dumb = shallow(<GymProblemsView gym={processed_gym} fetchGym={() => []} match={{url: ''}}/>)
+        });
+        it('+++ render the connected(SMART) component', () => {
+            expect(container.length).toEqual(1)
+        });
+        it('+++ check Prop matches with initialState', () => {
+            expect(container.prop('gym').data).toEqual(processed_gym.data)
+            expect(container.prop('fetchGym')()).toEqual(store.dispatch(gymDetailFetchRequested()))
+        });
     });
-    it('+++ render the connected(SMART) component', () => {
-        expect(container.length).toEqual(1)
+    describe('with auth True', () => {
+        beforeEach(() => {
+            store = mockStore({
+                gymReducer: {
+                    detail: {
+                        data: null
+                    }
+                }
+            });
+            container = shallow(<GymProblem store={store}/>);
+        });
+        it('+++ check Prop matches with initialState', () => {
+            expect(container.prop('gym').data).toEqual({
+                title: '',
+                solved: [],
+                unsolved: [],
+            })
+        });
     });
-    it('+++ check Prop matches with initialState', () => {
-        expect(container.prop('gym').data).toEqual(processed_gym.data)
-    });
-
 });

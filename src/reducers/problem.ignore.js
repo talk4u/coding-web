@@ -1,4 +1,4 @@
-import {types as actionType} from '../actions/problem'
+import {types as actionType} from '../actions/problem.ignore'
 
 const initialState = {
     body: {

@@ -3,7 +3,7 @@ import { all, call, fork, put, take, cancel, cancelled, takeLatest } from 'redux
 import { types as actionType, loginFail, loginSuccess, loginRequested } from '../actions/auth'
 import Api from '../config/Api'
 
-function* authorize(username, password) {
+export function* authorize(username, password) {
     try {
         // const token = yield call(Api.authorize, username, password)
         const token = yield {token:'123'}
@@ -19,7 +19,7 @@ function* authorize(username, password) {
     }
 }
 
-function* verify({username, token:oldToken}) {
+export function* verify({username, token:oldToken}) {
     try {
         // const token = yield call(Api.verify, oldToken)
         const token = yield {token:'123'}
@@ -37,7 +37,7 @@ function* verify({username, token:oldToken}) {
     }
 }
 
-function* acceptAuthReq() {
+export function* acceptAuthReq() {
     try {
         const action = yield take([actionType.LOGIN_REQUEST, actionType.AUTH_VERIFY])
 

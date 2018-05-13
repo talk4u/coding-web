@@ -4,6 +4,8 @@ import {shallow} from 'enzyme';
 import configureStore from 'redux-mock-store';
 import Adapter from 'enzyme-adapter-react-16';
 import Enzyme from "enzyme";
+import {loginRequested} from "../../../actions/auth";
+import {gymListFetchRequested} from "../../../actions/gym";
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -42,6 +44,7 @@ describe('GymList Shallow render', () => {
     });
     it('+++ check Prop matches with initialState', () => {
         expect(container.prop('gyms')).toEqual(gyms)
+        expect(container.prop('fetchGym')()).toEqual(store.dispatch(gymListFetchRequested()))
     });
 
 });

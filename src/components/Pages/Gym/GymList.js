@@ -61,7 +61,7 @@ export class GymListView extends React.Component{
         const {gyms} = this.props;
         return(
             <GymContainer>
-                { gyms===null ? 'hello':
+                { gyms!==null &&
                     gyms.map(g=>
                     <GymItem to={`${match.url}/${g.gym_id}`}>
                         <GymItem.Title>
