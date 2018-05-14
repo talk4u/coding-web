@@ -7,7 +7,7 @@ describe('Api gym', () => {
     it('returns data when gym list is called', done => {
         let mock = new MockAdapter(axios);
         const data = [];
-        mock.onGet(`${apiConfig.url}/gym`).reply(200, data);
+        mock.onGet(`${apiConfig.url}/gyms/`).reply(200, data);
 
         gym.list().then(response => {
             expect(response).toEqual(data);
@@ -16,10 +16,11 @@ describe('Api gym', () => {
     });
     it('returns data when gym detail is called', done => {
         let mock = new MockAdapter(axios);
+        const gym_id = 5;
         const data = [];
-        mock.onGet(`${apiConfig.url}/gym/5`).reply(200, data);
+        mock.onGet(`${apiConfig.url}/gyms/${gym_id}/`).reply(200, data);
 
-        gym.detail({id:5}).then(response => {
+        gym.detail(gym_id).then(response => {
             expect(response).toEqual(data);
             done();
         });

@@ -117,14 +117,15 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchGym: () => dispatch(gymDetailFetchRequested())
+        fetchGym: (gym_id) => dispatch(gymDetailFetchRequested(gym_id))
     }
 }
 
 export class GymProblemsView extends React.Component{
     constructor(props){
         super(props)
-        this.props.fetchGym();
+        const {gym_id} = this.props.match.params;
+        this.props.fetchGym(gym_id);
     }
 
     render(){
@@ -141,16 +142,16 @@ export class GymProblemsView extends React.Component{
                 </Gym.Info>
                 <ProblemsContainer>
                     {gym.data.unsolved.map(p=>
-                        <Unsolved>
-                            <Problem.Title to={`/problem/:slug`}>{p.name}</Problem.Title>
-                            <Problem.Action to={`/problem/:slug/rank`}>순위</Problem.Action>
-                            <Problem.Action to={`/problem/:slug/history`}>파일</Problem.Action>
+                        <Unsolved key={p.slug}>
+                            <Problem.Title to={`/problem/${p.slug}`}>{p.name}</Problem.Title>
+                            <Problem.Action to={`/problem/${p.slug}/rank`}>순위</Problem.Action>
+                            <Problem.Action to={`/problem/${p.slug}/history`}>파일</Problem.Action>
                         </Unsolved>
                     )}
                 </ProblemsContainer>
                 <ProblemsContainer>
                     {gym.data.solved.map(p=>
-                        <Unsolved to={`/problem/:slug`}>
+                        <Unsolved key={p.slug} to={`/problem/${p.slug}`}>
                             {p.name} {p.max_score}
                         </Unsolved>
                     )}

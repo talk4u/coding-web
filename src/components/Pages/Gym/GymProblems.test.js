@@ -40,17 +40,19 @@ describe('GymProblem Shallow render', () => {
     }
 
     describe('with auth True', () => {
+        const gym_id = 3;
         beforeEach(() => {
             store = mockStore(initialState);
             container = shallow(<GymProblem store={store}/>);
-            dumb = shallow(<GymProblemsView gym={processed_gym} fetchGym={() => []} match={{url: ''}}/>)
+            dumb = shallow(<GymProblemsView gym={processed_gym} fetchGym={() => []} match={{url: '', params:{gym_id:gym_id}}}/>)
         });
         it('+++ render the connected(SMART) component', () => {
             expect(container.length).toEqual(1)
         });
         it('+++ check Prop matches with initialState', () => {
+
             expect(container.prop('gym').data).toEqual(processed_gym.data)
-            expect(container.prop('fetchGym')()).toEqual(store.dispatch(gymDetailFetchRequested()))
+            expect(container.prop('fetchGym')(gym_id)).toEqual(store.dispatch(gymDetailFetchRequested(gym_id)))
         });
     });
     describe('with auth True', () => {
