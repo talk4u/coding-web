@@ -48,7 +48,6 @@ export class RootView extends React.Component {
             <Provider store={store}>
                 <BrowserRouter>
                     <Switch>
-                        {/*<Route exact path='/' component={Home}/>*/}
                         <Route exact path='/sign' component={Sign}/>
                         <PrivateRoute path='/' component={Private}/>
                         <Route component={()=>(<Redirect to={'/sign'}/>)}/>
