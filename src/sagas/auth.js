@@ -5,8 +5,8 @@ import Api from '../config/Api'
 
 export function* authorize(username, password) {
     try {
-        // const token = yield call(Api.authorize, username, password)
-        const token = yield {token:'123'}
+        const token = yield call(Api.authorize, username, password)
+        // const token = yield {token:'123'}
         yield call(Api.storeItem, {token, username})
         yield put(loginSuccess(token))
         return token
@@ -21,8 +21,8 @@ export function* authorize(username, password) {
 
 export function* verify({username, token:oldToken}) {
     try {
-        // const token = yield call(Api.verify, oldToken)
-        const token = yield {token:'123'}
+        const token = yield call(Api.verify, oldToken)
+        // const token = yield {token:'123'}
         yield call(Api.storeItem, {token, username})
         yield put(loginSuccess(token))
         return token

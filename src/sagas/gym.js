@@ -7,41 +7,42 @@ import Api from '../config/Api'
 
 function* fetchGymListAsync() {
     try{
-        // const gym = yield call(Api.gym.list)
-        const gym  = yield [
-            {
-                gym_id: 1,
-                name: 'title',
-                total_problem_count: 10,
-                solved_problem_count: 3,
-            },
-            {
-                gym_id: 2,
-                name: 'title',
-                total_problem_count: 10,
-                solved_problem_count: 5,
-            }
-        ]
+        const gym = yield call(Api.gym.list)
+        // const gym  = yield [
+        //     {
+        //         id: 1,
+        //         name: 'title',
+        //         total_problem_count: 10,
+        //         solved_problem_count: 3,
+        //     },
+        //     {
+        //         id: 2,
+        //         name: 'title',
+        //         total_problem_count: 10,
+        //         solved_problem_count: 5,
+        //     }
+        // ]
         yield put(gymListFetchSuccess(gym))
     } catch (error) {
         yield put(gymListFetchFail(error))
     }
 }
 
-function* fetchGymDetailAsync() {
+function* fetchGymDetailAsync(action) {
     try{
-        // const gym = yield call(Api.gym.detail)
-        const gym  = yield {
-            name:'기본 자료 구조',
-            problems:[
-                {name: 'title', max_score: 0},
-                {name: 'title', max_score: 0},
-                {name: 'title', max_score: 100},
-                {name: 'title', max_score: 100},
-                {name: 'title', max_score: 70},
-                {name: 'title', max_score: 100},
-                {name: 'title', max_score: 100},
-            ]}
+
+        const gym = yield call(Api.gym.detail, action.payload)
+        // const gym  = yield {
+        //     name:'기본 자료 구조',
+        //     problems:[
+        //         {name: 'title', max_score: 0},
+        //         {name: 'title', max_score: 0},
+        //         {name: 'title', max_score: 100},
+        //         {name: 'title', max_score: 100},
+        //         {name: 'title', max_score: 70},
+        //         {name: 'title', max_score: 100},
+        //         {name: 'title', max_score: 100},
+        //     ]}
         yield put(gymDetailFetchSuccess(gym))
     } catch (error) {
         yield put(gymDetailFetchFail(error))
