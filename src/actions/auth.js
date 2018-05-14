@@ -17,13 +17,11 @@ export const loginRequested = ({username, password}) => {
     }
 }
 
-export const loginSuccess = (token, username, userPK) => {
+export const loginSuccess = (token) => {
     return {
         type: types.LOGIN_SUCCESS,
         payload: {
             token,
-            username,
-            userPK
         }
     }
 }

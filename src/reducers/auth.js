@@ -2,8 +2,6 @@ import {types as actionType} from '../actions/auth'
 
 const initialState = {
     isAuthenticated: false,
-    username: '',
-    userPK: -1,
     loading: false,
     token: null,
     redirectToReferrer: false,
@@ -23,8 +21,6 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 isAuthenticated: true,
                 token: action.payload.token,
-                username: action.payload.username,
-                userPK: action.payload.userPK,
                 redirectToReferrer: true,
                 error: null
             }
@@ -34,7 +30,6 @@ const authReducer = (state = initialState, action) => {
                 isAuthenticated: false,
                 error: action.payload,
                 token: null,
-                username: '',
                 redirectToReferrer: true
             }
         case actionType.LOGOUT:
@@ -42,7 +37,6 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 isAuthenticated: false,
                 token: null,
-                username: '',
                 redirectToReferrer: false,
                 error: null
             }
@@ -51,7 +45,6 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 isAuthenticated: false,
                 token: null,
-                username: '',
                 redirectToReferrer: false
             }
         case actionType.AUTH_VERIFY:

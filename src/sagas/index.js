@@ -1,13 +1,13 @@
 import { all } from 'redux-saga/effects'
 import { loginFlow } from './auth'
-import { watchFetchUserAsync } from './user'
-import { watchFetchPromiseAsync, watchCreatePromiseAsync } from './promises'
+import {watchFetchGymDetailAsync, watchFetchGymListAsync} from './gym'
+import {watchFetchProblemListAsync} from "./problem";
 
 export default function* rootSaga() {
     yield all([
         loginFlow(),
-        watchFetchPromiseAsync(),
-        watchCreatePromiseAsync(),
-        watchFetchUserAsync(),
+        watchFetchGymListAsync(),
+        watchFetchGymDetailAsync(),
+        watchFetchProblemListAsync(),
     ])
 }
