@@ -5,11 +5,10 @@ import Api from '../config/Api'
 
 function* authorize(username, password) {
     try {
-        const token = yield call(Api.authorize, username, password)
+        // const token = yield call(Api.authorize, username, password)
+        const token = yield {token:'123'}
         yield call(Api.storeItem, {token, username})
-        const userList = yield call(()=>Api.fetchApi('/users/'))
-        const userPK = userList.filter(u => u.username==username)[0].id
-        yield put(loginSuccess(token, username, userPK))
+        yield put(loginSuccess(token))
         return token
     } catch (error) {
         yield put(loginFail(error))
@@ -22,11 +21,10 @@ function* authorize(username, password) {
 
 function* verify({username, token:oldToken}) {
     try {
-        const token = yield call(Api.verify, oldToken)
+        // const token = yield call(Api.verify, oldToken)
+        const token = yield {token:'123'}
         yield call(Api.storeItem, {token, username})
-        const userList = yield call(()=>Api.fetchApi('/users/'))
-        const userPK = userList.filter(u => u.username==username)[0].id
-        yield put(loginSuccess(token, username, userPK))
+        yield put(loginSuccess(token))
         return token
     } catch (error) {
         yield put(loginFail(error))
