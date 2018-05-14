@@ -2,10 +2,10 @@ import fetchApi from '../fetchApi'
 
 export const gym = {
     list: () => {
-        return fetchApi(`/gym`, null, 'get')
+        return fetchApi(`/gyms/`, null, 'get')
     },
-    detail: ({id}) => {
-        return fetchApi(`/gym/${id}`, null, 'get')
+    detail: (id) => {
+        return fetchApi(`/gyms/${id}/`, null, 'get')
     },
 }
 

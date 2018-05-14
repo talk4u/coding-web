@@ -63,7 +63,7 @@ export class GymListView extends React.Component{
             <GymContainer>
                 { gyms!==null &&
                     gyms.map(g=>
-                    <GymItem to={`${match.url}/${g.gym_id}`}>
+                    <GymItem to={`${match.url}/${g.id}`}>
                         <GymItem.Title>
                             {g.name}
                         </GymItem.Title>
