@@ -8,6 +8,7 @@ import {darkTheme, defaultTheme} from "./theme";
 
 export const AppBarContainer = styled.div`
     position: fixed;
+    z-index: 9999;
     width: 100%;
     height: ${appbar_height}px;
     background: ${props=>props.theme.backgroundColor};
