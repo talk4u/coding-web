@@ -1,5 +1,5 @@
 import React from 'react'
-import connect from "react-redux/es/connect/connect";
+import {connect} from "react-redux";
 import {Route, Redirect} from 'react-router-dom'
 
 const mapStateToProps = (state, ownProps) => {
@@ -8,21 +8,25 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-const PrivateRouteView = ({component: Component, isAuthenticated, ...rest}) => {
+export const PrivateRouteView = ({component: Component, isAuthenticated, ...rest}) => {
     return (
-        <React.Fragment>
-            {isAuthenticated ?
-                <Route {...rest} render={props => (
+        <Route
+            {...rest}
+            render={props=>
+                isAuthenticated ? (
                     <Component {...props}/>
-                )}/>:
-                <Redirect to={'/sign'}/>
+                ):(
+                    <Redirect
+                        to={{pathname: "/sign",
+                            state: {from: props.location}
+                        }}
+                    />
+                )
             }
-        </React.Fragment>
-
+        />
     )
 
 }
-
 const PrivateRoute = connect(
     mapStateToProps,
     null

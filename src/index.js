@@ -21,6 +21,7 @@ import {authVerify} from "./actions/auth";
 
 
 
+
 const mapStateToProps = (state, ownProps) => {
     return {
         isAuthenticated: state.authReducer.isAuthenticated
@@ -33,7 +34,7 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-class RootView extends React.Component {
+export class RootView extends React.Component {
     constructor(props) {
         super(props)
         const initToken = localStorage.getItem('token')
@@ -47,10 +48,10 @@ class RootView extends React.Component {
             <Provider store={store}>
                 <BrowserRouter>
                     <Switch>
-                        <Route exact path="/" component={Home}/>
-                        <Route exact path="/sign" component={Sign}/>
-                        <PrivateRoute path='/protected' component={Private}/>
-                        <Route component={()=>(<Redirect to={'/'}/>)}/>
+                        {/*<Route exact path='/' component={Home}/>*/}
+                        <Route exact path='/sign' component={Sign}/>
+                        <PrivateRoute path='/' component={Private}/>
+                        <Route component={()=>(<Redirect to={'/sign'}/>)}/>
                     </Switch>
                 </BrowserRouter>
             </Provider>
@@ -66,3 +67,5 @@ const Root = connect(
 
 ReactDOM.render(<Root store={store}/>, document.getElementById('root'));
 registerServiceWorker();
+
+export default Root
