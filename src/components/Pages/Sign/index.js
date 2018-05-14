@@ -2,6 +2,16 @@ import React from 'react'
 import {loginRequested} from "../../../actions/auth";
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
+import styled from 'styled-components'
+import {Form} from 'semantic-ui-react'
+import AppContent from "../../Layouts/AppContent";
+import AppBar from "../../Layouts/AppBar";
+
+const SignPlane = styled(Form)`
+    padding: 1rem 3rem;
+    background: #fff;
+`
+
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -39,23 +49,30 @@ class SignView extends React.Component{
     }
 
     render(){
-        const {isAuthenticated} = this.props
+        const { from } = this.props.location.state || {from: { pathname: "/"}};
+        const { isAuthenticated } = this.props;
+        if( isAuthenticated ){
+            return  <Redirect to={from}/>;
+        }
         return(
             <React.Fragment>
-                {isAuthenticated ?
-                    <Redirect to="/protected"/>
-                    :
-                    <form onSubmit={(e)=>{
+                <AppBar>logo</AppBar>
+                <AppContent>
+                    <SignPlane onSubmit={(e)=>{
                         this.handleSubmit()
                         e.preventDefault()
                     }}>
-                        <label htmlFor="username">username</label>
-                        <input type="text" name="username" placeholder="id" onChange={this.handleChange}/>
-                        <label htmlFor="password">username</label>
-                        <input type="password" name="password" placeholder="password" onChange={this.handleChange}/>
+                        <Form.Field>
+                            <label htmlFor="username">username</label>
+                            <input type="text" name="username" placeholder="id" onChange={this.handleChange}/>
+                        </Form.Field>
+                        <Form.Field>
+                            <label htmlFor="password">username</label>
+                            <input type="password" name="password" placeholder="password" onChange={this.handleChange}/>
+                        </Form.Field>
                         <button type="submit">로그인</button>
-                    </form>
-                }
+                    </SignPlane>
+                </AppContent>
             </React.Fragment>
 
         )

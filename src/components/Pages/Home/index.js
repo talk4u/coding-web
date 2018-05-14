@@ -1,6 +1,6 @@
 import React from 'react'
 
-import connect from "react-redux/es/connect/connect";
+import {connect} from "react-redux";
 import {Redirect} from 'react-router-dom'
 
 
@@ -10,11 +10,11 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-const HomeView = ({isAuthenticated}) =>{
+export const HomeView = ({isAuthenticated}) =>{
     return (
         <React.Fragment>
             {isAuthenticated ?
-                <Redirect to="/protected"/>
+                <Redirect to="/gym"/>
                 :
                 <Redirect to="/sign"/>
             }
