@@ -27,9 +27,10 @@ export const gymListFetchFail = (error) => {
     }
 }
 
-export const gymDetailFetchRequested = () => {
+export const gymDetailFetchRequested = (id) => {
     return {
         type: types.DETAIL_FETCH_REQUEST,
+        payload: id
     }
 }
 
