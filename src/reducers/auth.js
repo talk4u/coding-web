@@ -2,7 +2,7 @@ import {types as actionType} from '../actions/auth'
 
 const initialState = {
     isAuthenticated: false,
-    loading: false,
+    loading: true, //pending
     token: null,
     redirectToReferrer: false,
     error: null
@@ -19,6 +19,7 @@ const authReducer = (state = initialState, action) => {
         case actionType.LOGIN_SUCCESS:
             return {
                 ...state,
+                loading: false,
                 isAuthenticated: true,
                 token: action.payload.token,
                 redirectToReferrer: true,
@@ -27,6 +28,7 @@ const authReducer = (state = initialState, action) => {
         case actionType.LOGIN_FAILURE:
             return {
                 ...state,
+                loading: false,
                 isAuthenticated: false,
                 error: action.payload,
                 token: null,
@@ -35,6 +37,7 @@ const authReducer = (state = initialState, action) => {
         case actionType.LOGOUT:
             return {
                 ...state,
+                loading: false,
                 isAuthenticated: false,
                 token: null,
                 redirectToReferrer: false,
@@ -43,6 +46,7 @@ const authReducer = (state = initialState, action) => {
         case actionType.UNAUTHORIZED:
             return {
                 ...state,
+                loading: false,
                 isAuthenticated: false,
                 token: null,
                 redirectToReferrer: false
