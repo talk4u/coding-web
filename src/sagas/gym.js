@@ -1,29 +1,19 @@
 import { delay } from 'redux-saga'
-import { all, call, fork, put, take, cancel, cancelled, takeLatest } from 'redux-saga/effects'
+import { all, call, fork, put, take, takeEvery, cancel, cancelled, takeLatest } from 'redux-saga/effects'
 import {types as actionType, gymListFetchSuccess, gymListFetchFail, gymDetailFetchSuccess, gymDetailFetchFail} from '../actions/gym'
 import Api from '../config/Api'
+import handleException from "../actions/handleException";
 
 
 
 function* fetchGymListAsync() {
     try{
         const gym = yield call(Api.gym.list)
-        // const gym  = yield [
-        //     {
-        //         id: 1,
-        //         name: 'title',
-        //         total_problem_count: 10,
-        //         solved_problem_count: 3,
-        //     },
-        //     {
-        //         id: 2,
-        //         name: 'title',
-        //         total_problem_count: 10,
-        //         solved_problem_count: 5,
-        //     }
-        // ]
         yield put(gymListFetchSuccess(gym))
     } catch (error) {
+        if(error.status===401){
+            yield put(handleException["401"](fetchGymListAsync))
+        }
         yield put(gymListFetchFail(error))
     }
 }
@@ -32,19 +22,11 @@ function* fetchGymDetailAsync(action) {
     try{
 
         const gym = yield call(Api.gym.detail, action.payload)
-        // const gym  = yield {
-        //     name:'기본 자료 구조',
-        //     problems:[
-        //         {name: 'title', max_score: 0},
-        //         {name: 'title', max_score: 0},
-        //         {name: 'title', max_score: 100},
-        //         {name: 'title', max_score: 100},
-        //         {name: 'title', max_score: 70},
-        //         {name: 'title', max_score: 100},
-        //         {name: 'title', max_score: 100},
-        //     ]}
         yield put(gymDetailFetchSuccess(gym))
     } catch (error) {
+        if(error.status===401){
+            yield put(handleException["401"](fetchGymDetailAsync.bind(null, action)))
+        }
         yield put(gymDetailFetchFail(error))
     }
 }

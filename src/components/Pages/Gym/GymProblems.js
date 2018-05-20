@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import {connect} from "react-redux";
 import {Link} from 'react-router-dom'
 import {gymDetailFetchRequested, gymListFetchRequested} from "../../../actions/gym";
+import {Loader} from "semantic-ui-react";
 
 const Gym = styled.div`
     max-width: 900px;
@@ -133,29 +134,36 @@ export class GymProblemsView extends React.Component{
 
         return(
             <Gym>
-                <Gym.Title>{gym.data.title}</Gym.Title>
-                <Gym.Info>
-                    <User></User>
-                    <User></User>
-                    <User></User>
-                    외 3명이 풀고 있습니다.
-                </Gym.Info>
-                <ProblemsContainer>
-                    {gym.data.unsolved.map(p=>
-                        <Unsolved key={p.slug}>
-                            <Problem.Title to={`/problem/${p.slug}`}>{p.name}</Problem.Title>
-                            <Problem.Action to={`/problem/${p.slug}/rank`}>순위</Problem.Action>
-                            <Problem.Action to={`/problem/${p.slug}/history`}>파일</Problem.Action>
-                        </Unsolved>
-                    )}
-                </ProblemsContainer>
-                <ProblemsContainer>
-                    {gym.data.solved.map(p=>
-                        <Unsolved key={p.slug} to={`/problem/${p.slug}`}>
-                            {p.name} {p.max_score}
-                        </Unsolved>
-                    )}
-                </ProblemsContainer>
+                {gym.loading ? (
+                    <Loader active/>
+                ) : (
+                    <React.Fragment>
+                        <Gym.Title>{gym.data.title}</Gym.Title>
+                        <Gym.Info>
+                            <User></User>
+                            <User></User>
+                            <User></User>
+                            외 3명이 풀고 있습니다.
+                        </Gym.Info>
+                        <ProblemsContainer>
+                            {gym.data.unsolved.map(p=>
+                                <Unsolved key={p.slug}>
+                                    <Problem.Title to={`/problem/${p.slug}`}>{p.name}</Problem.Title>
+                                    <Problem.Action to={`/problem/${p.slug}/rank`}>순위</Problem.Action>
+                                    <Problem.Action to={`/problem/${p.slug}/history`}>파일</Problem.Action>
+                                </Unsolved>
+                            )}
+                        </ProblemsContainer>
+                        <ProblemsContainer>
+                            {gym.data.solved.map(p=>
+                                <Unsolved key={p.slug} to={`/problem/${p.slug}`}>
+                                    {p.name} {p.max_score}
+                                </Unsolved>
+                            )}
+                        </ProblemsContainer>
+                    </React.Fragment>
+                )}
+
             </Gym>
 
 

@@ -1,23 +1,42 @@
 import axios from "axios";
+import store from '../../../store'
 import apiConfig from "../config"
+import {logout, unauthorized} from "../../../actions/auth";
 
 const fetchApi = (endPoint, payload={}, method='get', headers={}, contentType='application/json') => {
     const accessToken = localStorage.getItem('token');
-    return axios({
-        method: method,
-        url: `${apiConfig.url}${endPoint}`,
+    const instance = axios.create({
+        baseURL: apiConfig.url,
         headers: accessToken ? {
             'Authorization' : 'JWT ' + accessToken,
             'content-type' : contentType
-        } : headers,
+        } : headers
+    });
+    const requestStack = [];
+    instance.interceptors.request.use(config=>{
+        requestStack.push(config);
+        return config;
+    })
+    return instance.request({
+        method: method,
+        url: `${endPoint}`,
         data: payload
     })
         .then(res => res.data)
         .catch(err => {
-            throw {
-                status: err.response.status,
-                data: err.response.data
+            if(err.response.status === 401){
+                store.dispatch(unauthorized());
+                throw {
+                    status: 401,
+                    data: requestStack
+                }
+            }else{
+                throw {
+                    status: err.response.status,
+                    data: requestStack
+                }
             }
+
         })
 }
 

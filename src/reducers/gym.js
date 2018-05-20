@@ -21,6 +21,7 @@ const gymReducer = (state = initialState, action) => {
                 ...state,
                 list: {
                     ...state.list,
+                    data: null,
                     loading: true,
                     error: null
                 }
@@ -40,6 +41,7 @@ const gymReducer = (state = initialState, action) => {
                 ...state,
                 list: {
                     ...state.list,
+                    data: null,
                     loading: false,
                     error: action.payload,
                 }
@@ -49,6 +51,7 @@ const gymReducer = (state = initialState, action) => {
                 ...state,
                 detail: {
                     ...state.detail,
+                    data: null,
                     loading: true,
                     error: null
                 }
@@ -70,6 +73,7 @@ const gymReducer = (state = initialState, action) => {
                     ...state.detail,
                     loading: false,
                     error: action.payload,
+                    data: null,
                 }
             }
 

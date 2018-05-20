@@ -50,3 +50,12 @@ export const authVerify = (username, token) => {
         }
     }
 }
+
+export const unauthorized = (requestStack) => {
+    return {
+        type: types.UNAUTHORIZED,
+        payload: {
+            requestStack
+        }
+    }
+}
