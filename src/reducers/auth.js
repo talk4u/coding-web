@@ -29,7 +29,6 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                isAuthenticated: false,
                 error: action.payload,
                 token: null,
                 redirectToReferrer: true
@@ -47,9 +46,9 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                isAuthenticated: false,
                 token: null,
-                redirectToReferrer: false
+                redirectToReferrer: false,
+                error: null
             }
         case actionType.AUTH_VERIFY:
             return {

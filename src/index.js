@@ -17,7 +17,7 @@ import registerServiceWorker from './registerServiceWorker';
 import store from './store'
 import {connect} from "react-redux";
 import {authVerify, logout} from "./actions/auth";
-import {Loader} from "semantic-ui-react";
+import {Dimmer, Loader} from "semantic-ui-react";
 
 
 
@@ -55,16 +55,18 @@ export class RootView extends React.Component {
         return(
             <Provider store={store}>
                 <BrowserRouter>
-                    {this.props.authPending ? (
-                        <Loader active/>
-                        ): (
+                    <React.Fragment>
+                        {this.props.authPending && (
+                            <Dimmer active inverted>
+                                <Loader active/>
+                            </Dimmer>
+                        )}
                         <Switch>
                             <Route exact path='/sign' component={Sign}/>
                             <PrivateRoute path='/' component={Private}/>
                             <Route component={()=>(<Redirect to={'/sign'}/>)}/>
                         </Switch>
-                    )}
-
+                    </React.Fragment>
                 </BrowserRouter>
             </Provider>
         )
