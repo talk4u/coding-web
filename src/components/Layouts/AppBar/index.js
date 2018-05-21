@@ -13,6 +13,7 @@ export const AppBarContainer = styled.div`
     height: ${appbar_height}px;
     background: ${props=>props.theme.backgroundColor};
     color: ${props=>props.theme.color};
+    padding: 0 2em;
 `
 const AppBarView = styled.div`
     display: flex;

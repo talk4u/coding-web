@@ -9,7 +9,7 @@ import {Loader} from "semantic-ui-react";
 const Gym = styled.div`
     max-width: 900px;
     margin: 0 auto;
-    padding: 60px 0;
+    padding: 3em 2em;
 `
 Gym.Title = styled.div`
     font-size:24px;
