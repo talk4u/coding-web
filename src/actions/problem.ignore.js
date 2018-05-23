@@ -11,9 +11,10 @@ export const types = {
 }
 
 
-export const problemBodyFetchRequested = () => {
+export const problemBodyFetchRequested = (id) => {
     return {
         type: types.BODY_FETCH_REQUEST,
+        payload: id
     }
 }
 
