@@ -5,6 +5,9 @@ export const types = {
     HISTORY_FETCH_REQUEST: "PROBLEM/HISTORY/FETCH/REQUEST",
     HISTORY_FETCH_SUCCESS: "PROBLEM/HISTORY/FETCH/SUCCESS",
     HISTORY_FETCH_FAILURE: "PROBLEM/HISTORY/FETCH/FAILURE",
+    SUBMISSION_FETCH_REQUEST: "PROBLEM/SUBMISSION/FETCH/REQUEST",
+    SUBMISSION_FETCH_SUCCESS: "PROBLEM/SUBMISSION/FETCH/SUCCESS",
+    SUBMISSION_FETCH_FAILURE: "PROBLEM/SUBMISSION/FETCH/FAILURE",
     RANK_FETCH_REQUEST: "PROBLEM/RANK/FETCH/REQUEST",
     RANK_FETCH_SUCCESS: "PROBLEM/RANK/FETCH/SUCCESS",
     RANK_FETCH_FAILURE: "PROBLEM/RANK/FETCH/FAILURE",
@@ -32,9 +35,10 @@ export const problemBodyFetchFail = (error) => {
     }
 }
 
-export const problemHistoryFetchRequested = () => {
+export const problemHistoryFetchRequested = (id) => {
     return {
         type: types.HISTORY_FETCH_REQUEST,
+        payload: id,
     }
 }
 
@@ -52,9 +56,10 @@ export const problemHistoryFetchFail = (error) => {
     }
 }
 
-export const problemRankFetchRequested = () => {
+export const problemRankFetchRequested = (id) => {
     return {
         type: types.RANK_FETCH_REQUEST,
+        payload: id
     }
 }
 
@@ -73,4 +78,27 @@ export const problemRankFetchFail = (error) => {
 }
 
 
+export const problemSubmissionFetchRequested = (problemId, submissionId) => {
+    return {
+        type: types.SUBMISSION_FETCH_REQUEST,
+        payload: {
+            problemId,
+            submissionId
+        }
+    }
+}
+
+export const problemSubmissionFetchSuccess = (submission) => {
+    return {
+        type: types.SUBMISSION_FETCH_SUCCESS,
+        payload: submission
+    }
+}
+
+export const problemSubmissionFetchFail = (error) => {
+    return {
+        type: types.SUBMISSION_FETCH_FAILURE,
+        payload: error
+    }
+}
 

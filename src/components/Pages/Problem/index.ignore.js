@@ -6,6 +6,7 @@ import media, {sizes} from '../../Styles/media';
 import {appbar_height} from '../../Layouts/var'
 import Body from './Body';
 import History from "./History";
+import Rank from "./Rank";
 
 const ProblemContainer = styled.div`
     display: flex;
@@ -91,6 +92,7 @@ class Problem extends React.Component{
                 <Content>
                     <Route path={`${match.url}`} exact={true} component={props=><Body problemId={match.params.id} {...props}/>}/>
                     <Route path={`${match.url}/history`} exact={true} component={props=><History problemId={match.params.id} {...props}/>}/>
+                    <Route path={`${match.url}/rank`} exact={true} component={props=><Rank problemId={match.params.id} {...props}/>}/>
                 </Content>
             </ProblemContainer>
         )
