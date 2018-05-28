@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {connect} from 'react-redux'
 import {problemBodyFetchRequested} from "../../../actions/problem.ignore";
 import Markdown from '../../Molecules/Markdown/';
-import {Header} from "semantic-ui-react";
+import {Header, Label} from "semantic-ui-react";
 import media from "../../Styles/media";
 
 const BodyContainer = styled.div`
@@ -16,6 +16,34 @@ const BodyContainer = styled.div`
     ${media.phone`
         padding: 2em 1.4em;
     `}
+`
+const ProblemHeader = styled(Header)`
+    &&{
+        padding: .3em 0;
+        position: relative;
+        margin-bottom: 1em;
+        &:after{
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: #000;
+            bottom: 0;
+            left: 0;
+            margin-left: -3rem;
+            ${media.desktop`
+                margin-left: -2rem;
+            `}
+            ${media.phone`
+                margin-left: -1.4rem;
+            `}
+        }
+    }
+    
+`
+const ProblemLimit = styled.div`
+    margin-bottom: .8em;
+    color: #959595;
 `
 
 
@@ -35,7 +63,8 @@ const mapDispatchToProps = (dispatch) => {
 class BodyView extends React.Component{
     constructor(props){
         super(props)
-        this.props.fetchProblem(this.props.problemId)
+        const {problemId} = this.props;
+        this.props.fetchProblem(problemId);
     }
 
     render(){
@@ -43,7 +72,20 @@ class BodyView extends React.Component{
             <BodyContainer>
                 {this.props.problem!==null &&
                 <React.Fragment>
-                    <Header as={'h1'}>{this.props.problem.name}</Header>
+                    <ProblemHeader as={'h1'}>
+                        {this.props.problem.name}
+                        <div>
+                            <Label style={{marginLeft:0}} size={'small'}>
+                                메모리 제한
+                                <Label.Detail>{this.props.problem.mem_limit_bytes/1024}MB</Label.Detail>
+                            </Label>
+                            <Label size={'small'}>
+                                시간 제한
+                                <Label.Detail>{this.props.problem.time_limit_seconds}ms</Label.Detail>
+                            </Label>
+                        </div>
+                    </ProblemHeader>
+
                     <Markdown
                         options={{
                             html: true,

@@ -1,7 +1,12 @@
 import { all } from 'redux-saga/effects'
 import { loginFlow } from './auth'
 import {watchFetchGymDetailAsync, watchFetchGymListAsync} from './gym'
-import {watchFetchProblemBodyAsync} from "./problem";
+import {
+    watchFetchProblemBodyAsync,
+    watchFetchProblemHistoryAsync,
+    watchFetchProblemRankAsync,
+    watchFetchProblemSubmissionAsync
+} from "./problem";
 
 export default function* rootSaga() {
     yield all([
@@ -9,5 +14,8 @@ export default function* rootSaga() {
         watchFetchGymListAsync(),
         watchFetchGymDetailAsync(),
         watchFetchProblemBodyAsync(),
+        watchFetchProblemHistoryAsync(),
+        watchFetchProblemRankAsync(),
+        watchFetchProblemSubmissionAsync(),
     ])
 }
