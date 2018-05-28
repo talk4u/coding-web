@@ -4,30 +4,17 @@ import Api from '../config/Api'
 import {types as actionType, problemBodyFetchFail, problemBodyFetchSuccess} from "../actions/problem.ignore";
 
 
-function* fetchProblemBodyAsync() {
+function* fetchProblemBodyAsync({type, payload}) {
     try{
-        // const problems = yield call(Api.problem.list)
-        const problems  = yield [
-            {
-                gym_id: 1,
-                name: 'title',
-                total_problem_count: 10,
-                solved_problem_count: 3,
-            },
-            {
-                gym_id: 2,
-                name: 'title',
-                total_problem_count: 10,
-                solved_problem_count: 5,
-            }
-        ]
-        yield put(problemBodyFetchSuccess(problems))
+        const problem = yield call(Api.problem.body, payload)
+
+        yield put(problemBodyFetchSuccess(problem))
     } catch (error) {
         yield put(problemBodyFetchFail(error))
     }
 }
 
-export function* watchFetchProblemListAsync() {
+export function* watchFetchProblemBodyAsync() {
     yield takeLatest(actionType.BODY_FETCH_REQUEST, fetchProblemBodyAsync)
 }
 

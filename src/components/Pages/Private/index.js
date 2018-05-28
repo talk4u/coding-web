@@ -43,7 +43,7 @@ export class PrivateView extends React.Component{
                 <AppContent>
                     <Switch>
                         <Route path={`${match.url}gym`} component={Gym}/>
-                        <Route path={`${match.url}problem`} component={Problem}/>
+                        <Route path={`${match.url}problem/:id`} component={Problem}/>
                         <Route component={()=>(<Redirect to={`${match.url}gym`}/>)}/>
                     </Switch>
                     <Modal

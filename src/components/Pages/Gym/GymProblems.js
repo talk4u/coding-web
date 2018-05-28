@@ -9,7 +9,7 @@ import {Loader} from "semantic-ui-react";
 const Gym = styled.div`
     max-width: 900px;
     margin: 0 auto;
-    padding: 60px 0;
+    padding: 3em 2em;
 `
 Gym.Title = styled.div`
     font-size:24px;
@@ -148,9 +148,9 @@ export class GymProblemsView extends React.Component{
                         <ProblemsContainer>
                             {gym.data.unsolved.map(p=>
                                 <Unsolved key={p.slug}>
-                                    <Problem.Title to={`/problem/${p.slug}`}>{p.name}</Problem.Title>
-                                    <Problem.Action to={`/problem/${p.slug}/rank`}>순위</Problem.Action>
-                                    <Problem.Action to={`/problem/${p.slug}/history`}>파일</Problem.Action>
+                                    <Problem.Title to={`/problem/${p.id}`}>{p.name}</Problem.Title>
+                                    <Problem.Action to={`/problem/${p.id}/rank`}>순위</Problem.Action>
+                                    <Problem.Action to={`/problem/${p.id}/history`}>파일</Problem.Action>
                                 </Unsolved>
                             )}
                         </ProblemsContainer>

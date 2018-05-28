@@ -24,8 +24,8 @@ const problemReducer = (state = initialState, action) => {
         case actionType.BODY_FETCH_REQUEST:
             return {
                 ...state,
-                retrieve: {
-                    ...state.retrieve,
+                body: {
+                    ...state.body,
                     loading: true,
                     error: null
                 }
@@ -33,8 +33,8 @@ const problemReducer = (state = initialState, action) => {
         case actionType.BODY_FETCH_SUCCESS:
             return {
                 ...state,
-                retrieve: {
-                    ...state.retrieve,
+                body: {
+                    ...state.body,
                     loading: false,
                     error: null,
                     data: action.payload
@@ -43,8 +43,8 @@ const problemReducer = (state = initialState, action) => {
         case actionType.BODY_FETCH_FAILURE:
             return {
                 ...state,
-                retrieve: {
-                    ...state.retrieve,
+                body: {
+                    ...state.body,
                     loading: false,
                     error: action.payload,
                 }
