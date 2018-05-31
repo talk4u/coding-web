@@ -9,7 +9,7 @@ import {
     problemHistoryFetchFail,
     problemRankFetchSuccess,
     problemRankFetchFail,
-    problemSubmissionFetchSuccess, problemSubmissionFetchFail
+    problemSubmissionFetchSuccess, problemSubmissionFetchFail, problemJudgeFetchSuccess, problemJudgeFetchFail
 } from "../actions/problem.ignore";
 
 
@@ -41,6 +41,28 @@ function* fetchProblemHistoryAsync({type, payload}) {
 
 export function* watchFetchProblemHistoryAsync() {
     yield takeLatest(actionType.HISTORY_FETCH_REQUEST, fetchProblemHistoryAsync)
+}
+
+
+function* fetchProblemJudgeAsync({type, payload:{problemId, judgeId, submissionId}}) {
+    try{
+        const {judge, submission} = yield all({
+            judge: call(Api.problem.judge, problemId, judgeId),
+            submission: call(Api.problem.submission, problemId, submissionId),
+        })
+        const result = {
+            detail: judge,
+            file: submission
+        }
+
+        yield put(problemJudgeFetchSuccess(result))
+    } catch (error) {
+        yield put(problemJudgeFetchFail(error))
+    }
+}
+
+export function* watchFetchProblemJudgeAsync() {
+    yield takeLatest(actionType.JUDGE_FETCH_REQUEST, fetchProblemJudgeAsync)
 }
 
 

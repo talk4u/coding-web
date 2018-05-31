@@ -5,6 +5,9 @@ export const types = {
     HISTORY_FETCH_REQUEST: "PROBLEM/HISTORY/FETCH/REQUEST",
     HISTORY_FETCH_SUCCESS: "PROBLEM/HISTORY/FETCH/SUCCESS",
     HISTORY_FETCH_FAILURE: "PROBLEM/HISTORY/FETCH/FAILURE",
+    JUDGE_FETCH_REQUEST: "PROBLEM/JUDGE/FETCH/REQUEST",
+    JUDGE_FETCH_SUCCESS: "PROBLEM/JUDGE/FETCH/SUCCESS",
+    JUDGE_FETCH_FAILURE: "PROBLEM/JUDGE/FETCH/FAILURE",
     SUBMISSION_FETCH_REQUEST: "PROBLEM/SUBMISSION/FETCH/REQUEST",
     SUBMISSION_FETCH_SUCCESS: "PROBLEM/SUBMISSION/FETCH/SUCCESS",
     SUBMISSION_FETCH_FAILURE: "PROBLEM/SUBMISSION/FETCH/FAILURE",
@@ -55,6 +58,32 @@ export const problemHistoryFetchFail = (error) => {
         payload: error
     }
 }
+
+export const problemJudgeFetchRequested = (problemId, judgeId, submissionId) => {
+    return {
+        type: types.JUDGE_FETCH_REQUEST,
+        payload: {
+            problemId,
+            judgeId,
+            submissionId
+        },
+    }
+}
+
+export const problemJudgeFetchSuccess = (problemJudge) => {
+    return {
+        type: types.JUDGE_FETCH_SUCCESS,
+        payload: problemJudge
+    }
+}
+
+export const problemJudgeFetchFail = (error) => {
+    return {
+        type: types.JUDGE_FETCH_FAILURE,
+        payload: error
+    }
+}
+
 
 export const problemRankFetchRequested = (id) => {
     return {

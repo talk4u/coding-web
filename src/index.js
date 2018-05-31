@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Link, Redirect, withRouter, Switch } from 'react-
 
 /* STYLE */
 import styled from 'styled-components'
+import './index.css'
 
 /* COMPONENTS */
 import { Home, Sign, Private, PrivateRoute } from './components/Pages'
