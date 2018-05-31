@@ -5,7 +5,10 @@ export const problem = {
         return fetchApi(`/problems/${id}/`, null, 'get')
     },
     history: (id) => {
-        return fetchApi(`/problems/${id}/submissions/`, null, 'get')
+        return fetchApi(`/problems/${id}/judge-results/`, null, 'get')
+    },
+    judge: (problem_id, judge_id) => {
+        return fetchApi(`/problems/${problem_id}/judge-results/${judge_id}/`, null, 'get')
     },
     rank: (id) => {
         return fetchApi(`/problems/${id}/ranks/`, null, 'get')

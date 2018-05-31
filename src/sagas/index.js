@@ -3,7 +3,7 @@ import { loginFlow } from './auth'
 import {watchFetchGymDetailAsync, watchFetchGymListAsync} from './gym'
 import {
     watchFetchProblemBodyAsync,
-    watchFetchProblemHistoryAsync,
+    watchFetchProblemHistoryAsync, watchFetchProblemJudgeAsync,
     watchFetchProblemRankAsync,
     watchFetchProblemSubmissionAsync
 } from "./problem";
@@ -17,5 +17,6 @@ export default function* rootSaga() {
         watchFetchProblemHistoryAsync(),
         watchFetchProblemRankAsync(),
         watchFetchProblemSubmissionAsync(),
+        watchFetchProblemJudgeAsync(),
     ])
 }

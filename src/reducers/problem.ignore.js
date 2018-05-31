@@ -11,6 +11,11 @@ const initialState = {
         error: null,
         data: null
     },
+    judge:{
+        loading: false,
+        error: null,
+        data: null
+    },
     rank: {
         loading: false,
         error: null,
