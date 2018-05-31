@@ -104,7 +104,7 @@ HistoryList.Detail.Pane = styled.div`
     margin-right: -4em;
     padding: 0 4em;
     ${media.phone`
-        max-height: calc(100vh - 30em);g
+        max-height: calc(100vh - 30em);
         margin-left: -2em;
         margin-right: -2em;
         padding: 0 2em;
