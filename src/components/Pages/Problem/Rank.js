@@ -125,7 +125,7 @@ class RankView extends React.Component{
                         const created_str =`${time.get('year')} ${time.get('month')}/${time.get('date')} ${time.get('hour')}:${time.get('minute')}:${time.get('second')}`
                         return (
                             <RankList key={i}>
-                                <RankItem.Rank>{i+1}</RankItem.Rank>
+                                <RankItem.Rank>#{i+1}</RankItem.Rank>
                                 <RankItem.Item>{r.user_name}</RankItem.Item>
                                 <RankItem.Item phone_hide={true}>{Math.floor(r.memory_used_bytes/1024)}MB</RankItem.Item>
                                 <RankItem.Item>{r.time_elapsed_seconds}ms</RankItem.Item>
