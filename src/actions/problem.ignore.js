@@ -14,6 +14,8 @@ export const types = {
     RANK_FETCH_REQUEST: "PROBLEM/RANK/FETCH/REQUEST",
     RANK_FETCH_SUCCESS: "PROBLEM/RANK/FETCH/SUCCESS",
     RANK_FETCH_FAILURE: "PROBLEM/RANK/FETCH/FAILURE",
+    HISTORY_POLL_START: "PROBLEM/HISTORY/POLL/START",
+    HISTORY_POLL_STOP: "PROBLEM/HISTORY/POLL/STOP",
 }
 
 
@@ -131,3 +133,17 @@ export const problemSubmissionFetchFail = (error) => {
     }
 }
 
+export const problemHistoryPollStart = (problem_id) => {
+    return{
+        type: types.HISTORY_POLL_START,
+        payload:{
+            id: problem_id
+        }
+    }
+}
+
+export const problemHistoryPollStop = () => {
+    return{
+        type: types.HISTORY_POLL_STOP
+    }
+}

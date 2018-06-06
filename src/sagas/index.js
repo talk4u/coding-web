@@ -5,7 +5,7 @@ import {
     watchFetchProblemBodyAsync,
     watchFetchProblemHistoryAsync, watchFetchProblemJudgeAsync,
     watchFetchProblemRankAsync,
-    watchFetchProblemSubmissionAsync
+    watchFetchProblemSubmissionAsync, watchPollHistoryList
 } from "./problem";
 
 export default function* rootSaga() {
@@ -18,5 +18,6 @@ export default function* rootSaga() {
         watchFetchProblemRankAsync(),
         watchFetchProblemSubmissionAsync(),
         watchFetchProblemJudgeAsync(),
+        watchPollHistoryList(),
     ])
 }
