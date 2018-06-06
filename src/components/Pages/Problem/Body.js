@@ -47,24 +47,11 @@ const ProblemLimit = styled.div`
 `
 
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        problem: state.problemReducer.body.data
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchProblem: (id) => dispatch(problemBodyFetchRequested(id))
-    }
-}
 
 
-class BodyView extends React.Component{
+class Body extends React.Component{
     constructor(props){
         super(props)
-        const {problemId} = this.props;
-        this.props.fetchProblem(problemId);
     }
 
     render(){
@@ -100,10 +87,5 @@ class BodyView extends React.Component{
         )
     }
 }
-
-const Body = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(BodyView);
 
 export default Body;
