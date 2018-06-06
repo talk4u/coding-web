@@ -4,8 +4,8 @@ export const problem = {
     body: (id) => {
         return fetchApi(`/problems/${id}/`, null, 'get')
     },
-    history: (id) => {
-        return fetchApi(`/problems/${id}/judge-results/`, null, 'get')
+    history: (id, config) => {
+        return fetchApi(`/problems/${id}/judge-results/`, null, 'get', config||{})
     },
     judge: (problem_id, judge_id) => {
         return fetchApi(`/problems/${problem_id}/judge-results/${judge_id}/`, null, 'get')
