@@ -1,5 +1,5 @@
 import { delay } from 'redux-saga'
-import { all, call, fork, put, take, cancel, cancelled, takeLatest } from 'redux-saga/effects'
+import { all, call, fork, put, take, cancel, cancelled, takeLatest, takeEvery, race } from 'redux-saga/effects'
 import Api from '../config/Api'
 import {
     types as actionType,
@@ -9,7 +9,11 @@ import {
     problemHistoryFetchFail,
     problemRankFetchSuccess,
     problemRankFetchFail,
-    problemSubmissionFetchSuccess, problemSubmissionFetchFail, problemJudgeFetchSuccess, problemJudgeFetchFail
+    problemSubmissionFetchSuccess,
+    problemSubmissionFetchFail,
+    problemJudgeFetchSuccess,
+    problemJudgeFetchFail,
+    problemHistoryPollStop
 } from "../actions/problem.ignore";
 
 
@@ -32,7 +36,6 @@ export function* watchFetchProblemBodyAsync() {
 function* fetchProblemHistoryAsync({type, payload}) {
     try{
         const history = yield call(Api.problem.history, payload)
-
         yield put(problemHistoryFetchSuccess(history))
     } catch (error) {
         yield put(problemHistoryFetchFail(error))
@@ -40,7 +43,7 @@ function* fetchProblemHistoryAsync({type, payload}) {
 }
 
 export function* watchFetchProblemHistoryAsync() {
-    yield takeLatest(actionType.HISTORY_FETCH_REQUEST, fetchProblemHistoryAsync)
+    yield takeEvery(actionType.HISTORY_FETCH_REQUEST, fetchProblemHistoryAsync)
 }
 
 
@@ -66,6 +69,37 @@ export function* watchFetchProblemJudgeAsync() {
 }
 
 
+function* pollHistoryList({type, payload}) {
+    while(true){
+        try{
+            const history = yield call(Api.problem.history, payload);
+            const now_grading = history.filter(judge => judge.status==='ENQ' || judge.status==='IP');
+            yield put(problemHistoryFetchSuccess(history));
+            if(now_grading.length === 0){
+                yield put(problemHistoryPollStop());
+            }else{
+                yield call(delay, 1000);
+            }
+        } catch (error) {
+            yield put(problemHistoryFetchFail(error));
+            if(error.status===401){
+                yield put(problemHistoryPollStop());
+            }else{
+                yield call(delay, 1000);
+            }
+        }
+    }
+}
+
+export function *watchPollHistoryList() {
+    while(true){
+        const action = yield take(actionType.HISTORY_POLL_START);
+        yield race([
+            call(pollHistoryList, action),
+            take(actionType.HISTORY_POLL_STOP)
+        ])
+    }
+}
 
 function* fetchProblemRankAsync({type, payload}) {
     try{

@@ -1,15 +1,17 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 import {connect} from 'react-redux'
 import media from "../../Styles/media";
 import {colors} from '../../Layouts/var';
 import {Loader, Menu, Tab} from "semantic-ui-react";
 import tinycolor from 'tinycolor2'
+import isEqual from 'lodash/isEqual';
 import {
-    problemHistoryFetchRequested,
+    problemHistoryFetchRequested, problemHistoryPollStart, problemHistoryPollStop, problemInProgressFetchRequested,
     problemJudgeFetchRequested,
 } from "../../../actions/problem.ignore";
-import {UnControlled as CodeMirror} from "react-codemirror2";
+import CodeMirror from "../../Molecules/CodeMirror"
+import overlayStyles from "../../Styles";
 
 const HistoryContainer = styled.div`
     line-height: 1.4;
@@ -17,7 +19,7 @@ const HistoryContainer = styled.div`
 
 const HistoryList = styled.ul`
     padding: 0;
-    margin: 0;
+    margin-bottom: 5em;
 `
 const colorToHex = {
     yellow: colors.yellow,
@@ -73,13 +75,13 @@ HistoryList.Item = styled.li`
         }
     }
 `
-HistoryList.Item.Container = styled.div`
+HistoryList.ItemContainer = styled.div`
     display: flex;
     padding: 0 1em;
 `
 HistoryList.Item.Elem = styled.div`
     width: 6em;
-    height: 6em;
+    height: 5.2em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -87,6 +89,17 @@ HistoryList.Item.Elem = styled.div`
     color: #959599;
     font-weight: 100;
     ${props => props.stretch ? 'flex: 1;' : ''}
+`
+
+const JudgingItem = HistoryList.Item.extend`
+    height: 6.6em;
+    display: flex;
+    padding: 0 1.5em;
+    border-left: none;
+    align-items: center;
+    &:hover{
+        ${overlayStyles.shadow}
+    }
 `
 
 HistoryList.Detail = styled.div`
@@ -145,17 +158,80 @@ TestCase.Result = styled.div`
     }
 `
 
+const GradingCircle = ({size, score, active}) => {
+    const randId = `clipper_${Math.floor(Math.random()*10000)}`;
+    const CircleContainer = styled.div`
+        width: ${size ? size : '4em'};
+        height: ${size ? size : '4em'};
+        position: relative;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+    `
+    const rotate360 = keyframes`
+      from {
+        transform: rotate(0deg);
+      }
+    
+      to {
+        transform: rotate(360deg);
+      }
+    `;
+    const CircleScore = styled.div`
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    `
+    const ClipCircle = styled.div`
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          background-image: ${active ? 
+            `linear-gradient(to bottom left, ${colors.yellow} 20%, ${colors.purple} 100%)` 
+            : `linear-gradient(to bottom left, #e1e1e7 20%, #d1d1d7 100%)`};
+          -webkit-clip-path: url(#clipper);
+          clip-path: url(#${randId});
+          ${active ? `
+            animation-name:${rotate360};
+              animation-duration: 1000ms;
+              animation-iteration-count: infinite;
+              animation-timing-function: linear;
+          `: null}
+           
+    `
+
+    return(
+        <React.Fragment>
+            <CircleContainer>
+                <svg width="0" height="0">
+                    <defs>
+                        <clipPath id={randId} clipPathUnits="objectBoundingBox">
+                            <path
+                                d="M0,0.5 a0.5,0.5 0 1,0 1,0 a0.5,0.5 0 1,0 -1,0z M0.08,0.5 a0.42,0.42 0 1,0 0.84,0 a0.42,0.42 0 1,0 -0.84,0z"
+                                clipRule="evenodd"/>
+                        </clipPath>
+                    </defs>
+                </svg>
+                <ClipCircle/>
+                <CircleScore>{score}</CircleScore>
+            </CircleContainer>
+        </React.Fragment>
+    )
+}
+
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        histories: state.problemReducer.history.data,
+        histories: state.problemReducer.history,
         judgeDetail: state.problemReducer.judge,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchHistory:  (id) => dispatch(problemHistoryFetchRequested(id)),
+        pollHistoryStart:  (id) => dispatch(problemHistoryPollStart(id)),
+        pollHistoryStop: () => dispatch(problemHistoryPollStop()),
         fetchJudge:  (problem_id, judge_id, submission_id) => dispatch(problemJudgeFetchRequested(problem_id, judge_id, submission_id)),
     }
 }
@@ -163,7 +239,7 @@ const mapDispatchToProps = (dispatch) => {
 const SubmitScore = ({score}) => {
     return (
         <HistoryList.Item.Elem>
-            <span style={{fontSize:'3em'}}>{score}</span>
+            <span style={{fontSize:'3em', fontWeight:'300'}}>{score}</span>
         </HistoryList.Item.Elem>
     )
 }
@@ -190,7 +266,7 @@ const SubmitDetail = ({source:{detail:{detail:test_cases}, file}}) => {
         { menuItem: <StyledMenuItem key='tab1'>Tab1</StyledMenuItem>, render: () =>
                 <HistoryList.Detail.Pane>
                     {test_cases.map((test, t_i)=>(
-                        <TestCase>
+                        <TestCase key={t_i}>
                             <TestCase.Title title={`test ${t_i+1}`} score={test.score} perfect={test.score!==0}/>
                             {test.testcases.map((t_case, t_c_i) => (
                                 <TestCase.Result key={t_c_i}>
@@ -210,7 +286,7 @@ const SubmitDetail = ({source:{detail:{detail:test_cases}, file}}) => {
                         options={{
                             lineNumbers:true,
                             height: '100%',
-                            mode: 'text/x-java',
+                            mode: file.lang_profile,
                             readOnly: true,
                             fixedGutter: false
                         }}
@@ -225,18 +301,16 @@ const SubmitDetail = ({source:{detail:{detail:test_cases}, file}}) => {
     )
 }
 
-const HistoryItem = ({summary, active, viewDetail, index, detail}) => {
-    const {status, score, memory_used_bytes, time_elapsed_seconds, code_size, submission_id, id:judge_id } = summary;
+const getMetaFromStatus = ({status, score}) => {
     let message = "";
     let color = "yellow";
-    let node = null;
     switch (status){
         case "ENQ":
             message = "채점 준비 중";
             color = "purple";
             break;
         case "IP":
-            message = "처리 중";
+            message = "채점 중";
             color = "purple";
             break;
         case "CTE":
@@ -256,27 +330,55 @@ const HistoryItem = ({summary, active, viewDetail, index, detail}) => {
             color = "green";
             break;
     }
+    return {message, color};
+}
+
+
+class OnJudging extends React.Component{
+    shouldComponentUpdate(nextProps){
+        if(isEqual(nextProps, this.props)){
+            return false;
+        }
+        return true;
+    }
+    render(){
+        const {summary} = this.props;
+        const {score} = summary;
+        let node = null;
+        const {message, color} = getMetaFromStatus(summary);
+        return (
+            <JudgingItem innerRef={n => node=n} status={color}>
+                <GradingCircle score={score} active={summary.status==='IP'}/>
+                <SubmitStatusMessage message={message}/>
+            </JudgingItem>
+        )
+    }
+
+}
+
+const HistoryGraded = ({summary, active, viewDetail, index, detail}) => {
+    const {status, score, memory_used_bytes, time_elapsed_seconds, code_size, submission_id, id:judge_id } = summary;
+    const {message, color} = getMetaFromStatus(summary);
+    let node = null;
     const handleClick = () => {
         viewDetail(index, judge_id, submission_id, node);
     }
     return (
         <HistoryList.Item innerRef={n => node=n} status={color} onClick={handleClick}>
-            <HistoryList.Item.Container>
+            <HistoryList.ItemContainer>
                 <SubmitScore score={score}/>
                 <SubmitStatusMessage message={message}/>
                 <SubmitInfo title={'메모리'} contents={`${Math.floor(memory_used_bytes/1024/1024)}MB`}/>
                 <SubmitInfo title={'수행시간'} contents={`${time_elapsed_seconds}ms`}/>
                 <SubmitInfo title={'코드길이'} contents={`${Math.floor(code_size/1024)}KB`}/>
-            </HistoryList.Item.Container>
+            </HistoryList.ItemContainer>
             {active && (
-                detail.loading ?
+                detail.loading && !detail.error ?
                     <Loader active={true}/> :
                     <HistoryList.Detail>
                         <SubmitDetail source={detail.data}/>
                     </HistoryList.Detail>
             )}
-
-
         </HistoryList.Item>
     )
 }
@@ -290,7 +392,6 @@ class HistoryView extends React.Component{
             activeNode: null
         };
         this.handleClick = this.handleClick.bind(this);
-        this.props.fetchHistory(this.props.problemId);
     }
 
     handleClick(index, judge_id, submission_id, node){
@@ -302,34 +403,52 @@ class HistoryView extends React.Component{
                 active: prevState.active===index ? -1 : index,
                 activeNode: prevState.active===index ? null : node,
             }
-        })
+        }, () => setTimeout(()=>window.scrollTo(0, node.offsetTop-100), 250))
     }
-
-    componentDidUpdate(){
-        if(this.state.activeNode!==null){
-            window.scrollTo(0, this.state.activeNode.offsetTop-100)
-        }
+    componentDidMount(){
+        this.props.pollHistoryStart(this.props.problemId);
+    }
+    componentWillUnmount(){
+        this.props.pollHistoryStop()
     }
 
     render(){
         const {histories, judgeDetail} = this.props;
         return(
             <HistoryContainer>
-                <HistoryList>
-                    {histories!==null &&
-                    (
-                        histories.map((judgeSummary, i)=>(
-                            <HistoryItem key={i}
-                                         index={i}
-                                         active={this.state.active===i}
-                                         viewDetail={this.handleClick}
-                                         summary={judgeSummary}
-                                         detail={judgeDetail}
-                            />
-                        ))
-                    )}
-
-                </HistoryList>
+                {!histories.loading && histories.data !== null &&
+                <React.Fragment>
+                    <HistoryList>
+                        {
+                            histories.data.filter(({status}) =>
+                                status === 'IP'
+                                || status === 'ENQ')
+                                .sort(({status}) => status==='ENQ')
+                                .map((judgeSummary, i) => (
+                                    <OnJudging key={i}
+                                               summary={judgeSummary}
+                                    />
+                                ))
+                        }
+                    </HistoryList>
+                    <HistoryList>
+                        {
+                            histories.data.filter(judgeSummary =>
+                                judgeSummary.status !== 'IP'
+                                && judgeSummary.status !== 'ENQ')
+                                .map((judgeSummary, i) => (
+                                    <HistoryGraded key={i}
+                                                   index={i}
+                                                   active={this.state.active === i}
+                                                   viewDetail={this.handleClick}
+                                                   summary={judgeSummary}
+                                                   detail={judgeDetail}
+                                    />
+                                ))
+                        }
+                    </HistoryList>
+                </React.Fragment>
+                }
             </HistoryContainer>
         )
     }

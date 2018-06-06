@@ -3,7 +3,7 @@ import store from '../../../store'
 import apiConfig from "../config"
 import {logout, unauthorized} from "../../../actions/auth";
 
-const fetchApi = (endPoint, payload={}, method='get', headers={}, contentType='application/json') => {
+const fetchApi = (endPoint, payload={}, method='get', config={}, headers={}, contentType='application/json') => {
     const accessToken = localStorage.getItem('token');
     const instance = axios.create({
         baseURL: apiConfig.url,
@@ -20,7 +20,8 @@ const fetchApi = (endPoint, payload={}, method='get', headers={}, contentType='a
     return instance.request({
         method: method,
         url: `${endPoint}`,
-        data: payload
+        data: payload,
+        ...config,
     })
         .then(res => res.data)
         .catch(err => {

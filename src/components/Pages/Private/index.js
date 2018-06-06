@@ -6,13 +6,20 @@ import AppContent from "../../Layouts/AppContent";
 
 import styled, {ThemeProvider} from 'styled-components'
 import {darkTheme} from "../../Layouts/AppBar/theme";
-import {Route, Redirect, Switch} from "react-router-dom";
+import {Route, Redirect, Switch, Link} from "react-router-dom";
 import Gym from "../Gym";
 import Problem from "../Problem/index.ignore";
-import {Modal} from "semantic-ui-react";
+import {Icon, Modal} from "semantic-ui-react";
 import SignForm from "../../Organisms/SignForm";
+import Button from "../../Atoms/Button";
+import {colors} from "../../Layouts/var";
 
-
+const StyledMenu = styled(Link)`
+    color: #fff;
+`
+const LogoutButton = styled(Button)`
+    margin: 0 0 0 auto;
+`
 const mapStateToProps = (state, ownProps) => {
     return {
         tokenValid: state.authReducer.token!==null
@@ -37,7 +44,14 @@ export class PrivateView extends React.Component{
         return(
             <React.Fragment>
                 <ThemeProvider theme={darkTheme}>
-                    <AppBar>logo<button onClick={this.logout}>Logout</button></AppBar>
+                    <AppBar>
+                        <Switch>
+                            <Route path={`${match.url}gym`} exact={true} component={()=><span>Coding Talk</span>}/>
+                            <Route component={()=><StyledMenu to={`${match.url}gym`}><Icon name='arrow left'/>Go to GYM</StyledMenu>}/>
+                        </Switch>
+
+                        <LogoutButton onClick={this.logout} color={colors.purple} size={'tiny'}>Logout</LogoutButton>
+                    </AppBar>
                 </ThemeProvider>
 
                 <AppContent>
@@ -49,7 +63,7 @@ export class PrivateView extends React.Component{
                     <Modal
                         open={!tokenValid}
                         basic
-                        size='small'
+                        size='mini'
                     >
                         <Modal.Content>
                             <SignForm/>

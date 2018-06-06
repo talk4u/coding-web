@@ -5,11 +5,30 @@ import {Redirect} from 'react-router-dom'
 import styled, {css} from 'styled-components'
 import Form from '../../Atoms/Form'
 import overlayStyles from '../../Styles'
+import Button from '../../Atoms/Button'
+import {colors} from '../../Layouts/var'
 
 export const SignPlane = styled(Form)`
-    padding: 1rem 3rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1.6rem 2rem 1.2rem 2rem;
     background: #fff;
     ${overlayStyles.shadow}
+`
+const SignFormField = styled(Form.Field)`
+    &&&{
+        &:last-of-type{
+            margin-bottom: auto;
+            
+        }
+    }
+`
+
+const SignButton = styled(Button)`
+    &&&{
+        margin: 0;
+        margin-top: 1em;
+    }
 `
 
 
@@ -43,22 +62,23 @@ export class SignView extends React.Component{
         })
     }
 
-    render(){
-        return(
 
+    render(){
+        const {style, ...rest} = this.props;
+        return(
             <SignPlane onSubmit={(e)=>{
                 this.handleSubmit()
                 e.preventDefault()
-            }}>
-                <Form.Field>
+            }} style={style}>
+                <SignFormField>
                     <label htmlFor="username">username</label>
-                    <input type="text" name="username" placeholder="id" onChange={this.handleChange}/>
-                </Form.Field>
-                <Form.Field>
+                    <input type="text" name="username" placeholder="id" onChange={this.handleChange} autoFocus={true}/>
+                </SignFormField>
+                <SignFormField>
                     <label htmlFor="password">username</label>
                     <input type="password" name="password" placeholder="password" onChange={this.handleChange}/>
-                </Form.Field>
-                <button type="submit">로그인</button>
+                </SignFormField>
+                <SignButton type="submit" color={colors.purple} fluid={true}>로그인</SignButton>
             </SignPlane>
 
         )
