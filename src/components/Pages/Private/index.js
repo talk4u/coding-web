@@ -11,6 +11,8 @@ import Gym from "../Gym";
 import Problem from "../Problem/index.ignore";
 import {Modal} from "semantic-ui-react";
 import SignForm from "../../Organisms/SignForm";
+import Button from "../../Atoms/Button";
+import {colors} from "../../Layouts/var";
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -37,7 +39,7 @@ export class PrivateView extends React.Component{
         return(
             <React.Fragment>
                 <ThemeProvider theme={darkTheme}>
-                    <AppBar>logo<button onClick={this.logout}>Logout</button></AppBar>
+                    <AppBar>Coding Talk<Button onClick={this.logout} color={colors.purple} size={'tiny'}>Logout</Button></AppBar>
                 </ThemeProvider>
 
                 <AppContent>
@@ -49,7 +51,7 @@ export class PrivateView extends React.Component{
                     <Modal
                         open={!tokenValid}
                         basic
-                        size='small'
+                        size='mini'
                     >
                         <Modal.Content>
                             <SignForm/>
