@@ -58,6 +58,7 @@ Sidebar.Item = styled(Link)`
     padding: 1em 0;
     text-align: center;
     color: #959599;
+    ${props=>props.active && `color: #222;`}
     &:hover{
         color: #313133;
     }
@@ -112,6 +113,19 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
+
+const SidebarLink = ({ label, to, activeOnlyWhenExact }) => (
+    <Route
+        path={to}
+        exact={activeOnlyWhenExact}
+        children={({ match }) => (
+            <Sidebar.Item active={match} to={to}>
+                {label}
+            </Sidebar.Item>
+        )}
+    />
+);
+
 class ProblemView extends React.Component{
     constructor(props){
         super(props)
@@ -136,9 +150,9 @@ class ProblemView extends React.Component{
         return(
             <ProblemContainer>
                 <Sidebar>
-                    <Sidebar.Item to={`${match.url}`}>문제</Sidebar.Item>
-                    <Sidebar.Item to={`${match.url}/history`}>히스토리</Sidebar.Item>
-                    <Sidebar.Item to={`${match.url}/rank`}>순위</Sidebar.Item>
+                    <SidebarLink to={`${match.url}`} label={'문제'} activeOnlyWhenExact={true}/>
+                    <SidebarLink to={`${match.url}/history`} label={'히스토리'}/>
+                    <SidebarLink to={`${match.url}/rank`} label={'순위'}/>
                     <StyledScoreBar score={problem===null ? 0 : problem.max_score}/>
                     <StyledDropzone onDrop={this.onDrop}
                               multiple={false}
