@@ -49,6 +49,7 @@ const Sidebar = styled.aside`
         left: 0;
         height: ${sidebar_height};
         flex-direction: row;
+        justify-content: space-evenly;
         background: #f1f1f5;
         padding: 0 1em;
     `}
@@ -85,13 +86,17 @@ const Content = styled.div`
 
 const StyledScoreBar = styled(ScoreBar)`
     margin: 2em 0;
+    ${media.phone`
+        margin: initial;
+        padding: .4em .8em;
+        width: 7em;
+    `}
 `
 
 const StyledDropzone = styled(Dropzone)`
-    padding: 2em 0;
-    margin: 1em 0;
-    transition: all .2s;
-    ${props=> props.active ? `background-color: ${props.color}`:null};
+    ${media.phone`
+        display:none !important;
+    `}
 `
 
 
@@ -135,7 +140,7 @@ class ProblemView extends React.Component{
                     <Sidebar.Item to={`${match.url}/history`}>히스토리</Sidebar.Item>
                     <Sidebar.Item to={`${match.url}/rank`}>순위</Sidebar.Item>
                     <StyledScoreBar score={problem===null ? 0 : problem.max_score}/>
-                    <Dropzone onDrop={this.onDrop}
+                    <StyledDropzone onDrop={this.onDrop}
                               multiple={false}
                               style={{padding:'2em 0', margin:'1em 0', display:'flex', flexDirection:'column', borderRadius:'2px', textAlign:'center'}}
                               activeStyle={{border: `1px solid ${colors.purple}`}}
@@ -150,7 +155,7 @@ class ProblemView extends React.Component{
                             (
                                 <Button size={'small'}> 업로드 </Button>
                             )}
-                    </Dropzone>
+                    </StyledDropzone>
 
 
                 </Sidebar>
