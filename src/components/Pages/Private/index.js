@@ -11,7 +11,7 @@ import Gym from "../Gym";
 import Problem from "../Problem/index.ignore";
 import {Icon, Modal} from "semantic-ui-react";
 import SignForm from "../../Organisms/SignForm";
-import Button from "../../Atoms/Button";
+import Button from "../../Atoms/Button/index.ignore";
 import {colors} from "../../Layouts/var";
 
 const StyledMenu = styled(Link)`

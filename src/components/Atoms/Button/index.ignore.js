@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button as SemainticButton } from 'semantic-ui-react';
 import styled from 'styled-components';
-import {colors} from "../../Layouts/var";
 import tinycolor from 'tinycolor2'
 import overlayStyles from "../../Styles";
 

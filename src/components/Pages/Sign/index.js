@@ -10,7 +10,7 @@ const mapStateToProps = (state, ownProps) => {
         isAuthenticated: state.authReducer.isAuthenticated
     }
 }
-const SignView = (props) => {
+export const SignView = (props) => {
     const { from } = props.location.state || {from: { pathname: "/"}};
     const { isAuthenticated } = props;
     if( isAuthenticated ){
@@ -26,7 +26,7 @@ const SignView = (props) => {
     )
 }
 
-const Sign = withRouter(connect(
+const Sign = connect(
     mapStateToProps,
-)(SignView))
+)(SignView)
 export default Sign

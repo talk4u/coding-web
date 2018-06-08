@@ -32,7 +32,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom --coverage --collectCoverageFrom=src/**/*js --collectCoverageFrom=!src/**/*.ignore.js --collectCoverageFrom=!src/sagas/* --collectCoverageFrom=!src/*.js",
+    "test": "react-scripts test --env=jsdom --coverage --collectCoverageFrom=src/**/*js --collectCoverageFrom=!src/**/*.ignore.js --collectCoverageFrom=!src/sagas/* --collectCoverageFrom=!src/*.js --collectCoverageFrom=!src/components/Molecules/**/*.js --collectCoverageFrom=!src/components/Pages/Problem/**/*.js",
     "eject": "react-scripts eject"
   },
   "devDependencies": {

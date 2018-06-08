@@ -13,10 +13,10 @@ Enzyme.configure({ adapter: new Adapter() });
 describe('Sign Shallow render', () => {
     const mockStore = configureStore();
     let store, container, dumb;
-
+    store = mockStore({});
     describe('with auth True', () => {
         beforeEach(() => {
-            container = shallow(<Sign/>);
+            container = shallow(<SignForm store={store}/>);
             dumb = shallow(<SignView/>)
         });
         it('+++ render the connected(SMART) component', () => {
@@ -31,7 +31,7 @@ describe('Sign Shallow render', () => {
     describe('with auth False', () => {
         const mockSignfn = jest.fn()
         beforeEach(() => {
-            container = shallow(<SignForm/>);
+            container = shallow(<SignForm store={store}/>);
             dumb = shallow(<SignView handleSubmit={mockSignfn}/>)
         });
         it('+++ render the DUMB component', () => {

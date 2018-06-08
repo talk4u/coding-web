@@ -72,7 +72,11 @@ const iterableState = (state, action) => {
         }
     }
 
-    if(Object.values(actionType).indexOf(action.type)<0){
+    if(
+        Object.keys(actionType).map(function(e) {
+            return actionType[e]
+        }).indexOf(action.type)<0
+    ){
         return state;
     }else{
         return obj[action.type.split('/')[1]](action)

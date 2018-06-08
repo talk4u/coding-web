@@ -3,6 +3,7 @@ import authReducer from './auth'
 import gymReducer from './gym'
 import problemReducer from './problem.ignore'
 import {createStore} from "redux";
+import exceptionReducer from "./hadleException";
 
 
 describe('App Reducer ', () => {
@@ -15,13 +16,14 @@ describe('App Reducer ', () => {
         expect(store.getState().authReducer).toEqual(authReducer(undefined, {}))
         expect(store.getState().gymReducer).toEqual(gymReducer(undefined, {}))
         expect(store.getState().problemReducer).toEqual(problemReducer(undefined, {}))
+        expect(store.getState().exceptionReducer).toEqual(exceptionReducer(undefined, {}))
 
 // alternatively you can test values explicitly although this
 // couples this test to child reducer impl details:
 
         expect(store.getState().authReducer).toEqual({
             isAuthenticated: false,
-            loading: false,
+            loading: true,
             token: null,
             redirectToReferrer: false,
             error: null
@@ -54,7 +56,15 @@ describe('App Reducer ', () => {
                 error: null,
                 data: null
             },
+            judge:{
+                loading: false,
+                error: null,
+                data: null
+            },
         })
 
+        expect(store.getState().exceptionReducer).toEqual({
+            reqs:[]
+        })
     })
 })

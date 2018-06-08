@@ -5,6 +5,7 @@ import configureStore from 'redux-mock-store';
 import Adapter from 'enzyme-adapter-react-16';
 import Enzyme from "enzyme";
 import {gymDetailFetchRequested, gymListFetchRequested} from "../../../actions/gym";
+import {Loader} from "semantic-ui-react";
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -38,7 +39,26 @@ describe('GymProblem Shallow render', () => {
         }
 
     }
-
+    describe('with auth True', () => {
+        const gym_id = 3;
+        beforeEach(() => {
+            store = mockStore({
+                gymReducer:{
+                    detail:{
+                        data: null
+                    }
+                }
+            });
+            container = shallow(<GymProblem store={store}/>);
+        });
+        it('+++ render the connected(SMART) component', () => {
+            expect(container.prop('gym').data).toEqual({
+                solved:[],
+                title:"",
+                unsolved:[]
+            })
+        });
+    })
     describe('with auth True', () => {
         const gym_id = 3;
         beforeEach(() => {
@@ -50,28 +70,27 @@ describe('GymProblem Shallow render', () => {
             expect(container.length).toEqual(1)
         });
         it('+++ check Prop matches with initialState', () => {
-
             expect(container.prop('gym').data).toEqual(processed_gym.data)
             expect(container.prop('fetchGym')(gym_id)).toEqual(store.dispatch(gymDetailFetchRequested(gym_id)))
         });
     });
-    describe('with auth True', () => {
+
+
+    describe('with auth True and loading', () => {
+        const gym_id = 3;
         beforeEach(() => {
             store = mockStore({
                 gymReducer: {
                     detail: {
+                        loading: true,
                         data: null
                     }
                 }
             });
-            container = shallow(<GymProblem store={store}/>);
+            dumb = shallow(<GymProblemsView gym={{loading:true}} fetchGym={() => []} match={{url: '', params:{gym_id:gym_id}}}/>)
         });
         it('+++ check Prop matches with initialState', () => {
-            expect(container.prop('gym').data).toEqual({
-                title: '',
-                solved: [],
-                unsolved: [],
-            })
+            expect(dumb.render()).toEqual(shallow(<Loader active/>).render())
         });
     });
 });

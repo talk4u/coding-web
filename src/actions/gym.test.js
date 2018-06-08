@@ -5,7 +5,6 @@ import {types,
     gymListFetchFail,
     gymListFetchRequested,
     gymListFetchSuccess} from './gym'
-import {gym} from "../config/Api/gym";
 
 describe('Gym Actions', () => {
     it('should create action when list requested', () => {
@@ -37,9 +36,11 @@ describe('Gym Actions', () => {
     });
 
     it('should create action when detail requested', () => {
-        expect(gymDetailFetchRequested()).toEqual(
+        const id = 1;
+        expect(gymDetailFetchRequested(id)).toEqual(
             {
                 type: types.DETAIL_FETCH_REQUEST,
+                payload: id
             }
         )
     });

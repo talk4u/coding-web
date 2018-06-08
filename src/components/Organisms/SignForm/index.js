@@ -5,7 +5,7 @@ import {Redirect} from 'react-router-dom'
 import styled, {css} from 'styled-components'
 import Form from '../../Atoms/Form'
 import overlayStyles from '../../Styles'
-import Button from '../../Atoms/Button'
+import Button from '../../Atoms/Button/index.ignore'
 import {colors} from '../../Layouts/var'
 
 export const SignPlane = styled(Form)`

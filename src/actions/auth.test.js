@@ -1,4 +1,4 @@
-import {types, loginRequested, loginSuccess, loginFail, logout, authVerify} from './auth'
+import {types, loginRequested, loginSuccess, loginFail, logout, authVerify, unauthorized} from './auth'
 
 describe('Auth Actions', () => {
     it('should create action when login requested', () => {
@@ -48,6 +48,18 @@ describe('Auth Actions', () => {
             {
                 type: types.AUTH_VERIFY,
                 payload: old_auth
+            }
+        )
+    });
+
+    it('should create action when unauthorized', () => {
+        const request_stack = []
+        expect(unauthorized(request_stack)).toEqual(
+            {
+                type: types.UNAUTHORIZED,
+                payload: {
+                    requestStack: request_stack
+                }
             }
         )
     });

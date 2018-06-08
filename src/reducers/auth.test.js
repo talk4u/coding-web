@@ -4,7 +4,7 @@ import {types as actionType} from '../actions/auth';
 describe('todos reducer', () => {
     const state = {
         isAuthenticated: false,
-        loading: false,
+        loading: true,
         token: null,
         redirectToReferrer: false,
         error: null
@@ -37,10 +37,11 @@ describe('todos reducer', () => {
             )
         ).toEqual({
             ...state,
+            loading: false,
             isAuthenticated: true,
-            token,
             redirectToReferrer: true,
-            error: null
+            error: null,
+            token,
 
         });
 
@@ -54,8 +55,8 @@ describe('todos reducer', () => {
             )
         ).toEqual({
             ...state,
-            isAuthenticated: false,
-            error: error,
+            loading: false,
+            error,
             token: null,
             redirectToReferrer: true
         });
@@ -69,6 +70,7 @@ describe('todos reducer', () => {
             )
         ).toEqual({
             ...state,
+            loading: false,
             isAuthenticated: false,
             token: null,
             redirectToReferrer: false,
@@ -84,9 +86,10 @@ describe('todos reducer', () => {
             )
         ).toEqual({
             ...state,
-            isAuthenticated: false,
+            loading: false,
             token: null,
-            redirectToReferrer: false
+            redirectToReferrer: false,
+            error: null
         });
 
         expect(

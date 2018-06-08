@@ -10,7 +10,11 @@ import {logout} from "../../../actions/auth";
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Private Shallow render', () => {
-    const initialState = {}
+    const initialState = {
+        authReducer:{
+            token: null
+        }
+    }
 
     const mockStore = configureStore();
     let store, container, dumb;
@@ -19,7 +23,7 @@ describe('Private Shallow render', () => {
     describe('default rendering', () => {
         beforeEach(()=>{
             container = shallow(<Private store={store}/> );
-            dumb = shallow(<PrivateView match={{url:'/'}} logout={mockFn}/>)
+            dumb = shallow(<PrivateView match={{url:'/'}} logout={mockFn} tokenValid={false}/>)
         });
         it('+++ render the connected(SMART) component', () => {
             expect(container.length).toEqual(1)
