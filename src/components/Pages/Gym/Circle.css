@@ -1,0 +1,18 @@
+.gym__item .CircularProgressbar .CircularProgressbar-path {
+  stroke: #6B29FB; }
+.gym__item .CircularProgressbar .CircularProgressbar-trail {
+  stroke: #e1e1e7; }
+.gym__item .CircularProgressbar .CircularProgressbar-text {
+  fill: #6B29FB; }
+.gym__item .CircularProgressbar .CircularProgressbar-background {
+  fill: transparent; }
+.gym__item:hover .CircularProgressbar .CircularProgressbar-path {
+  stroke: #fff; }
+.gym__item:hover .CircularProgressbar .CircularProgressbar-trail {
+  stroke: #b8a0fb; }
+.gym__item:hover .CircularProgressbar .CircularProgressbar-text {
+  fill: #fff; }
+.gym__item:hover .CircularProgressbar .CircularProgressbar-background {
+  fill: transparent; }
+
+/*# sourceMappingURL=Circle.css.map */

@@ -64,11 +64,11 @@ class Body extends React.Component{
                         <div>
                             <Label style={{marginLeft:0}} size={'small'}>
                                 메모리 제한
-                                <Label.Detail>{this.props.problem.mem_limit_bytes/1024}MB</Label.Detail>
+                                <Label.Detail>{this.props.problem.mem_limit_bytes/1024/1024}MB</Label.Detail>
                             </Label>
                             <Label size={'small'}>
                                 시간 제한
-                                <Label.Detail>{this.props.problem.time_limit_seconds}ms</Label.Detail>
+                                <Label.Detail>{this.props.problem.time_limit_seconds}초</Label.Detail>
                             </Label>
                         </div>
                     </ProblemHeader>
