@@ -71,11 +71,11 @@ export class SignView extends React.Component{
                 e.preventDefault()
             }} style={style}>
                 <SignFormField>
-                    <label htmlFor="username">username</label>
+                    <label htmlFor="username">ID</label>
                     <input type="text" name="username" placeholder="id" onChange={this.handleChange} autoFocus={true}/>
                 </SignFormField>
                 <SignFormField>
-                    <label htmlFor="password">username</label>
+                    <label htmlFor="password">password</label>
                     <input type="password" name="password" placeholder="password" onChange={this.handleChange}/>
                 </SignFormField>
                 <SignButton type="submit" color={colors.purple} fluid={true}>로그인</SignButton>

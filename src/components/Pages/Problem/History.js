@@ -286,7 +286,7 @@ const SubmitDetail = ({source:{detail:{detail:test_cases}, file}}) => {
                         options={{
                             lineNumbers:true,
                             height: '100%',
-                            mode: file.lang_profile,
+                            mode: file.lang,
                             readOnly: true,
                             fixedGutter: false
                         }}
@@ -369,7 +369,7 @@ const HistoryGraded = ({summary, active, viewDetail, index, detail}) => {
                 <SubmitScore score={score}/>
                 <SubmitStatusMessage message={message}/>
                 <SubmitInfo title={'메모리'} contents={`${Math.floor(memory_used_bytes/1024/1024)}MB`}/>
-                <SubmitInfo title={'수행시간'} contents={`${time_elapsed_seconds}ms`}/>
+                <SubmitInfo title={'수행시간'} contents={`${time_elapsed_seconds}s`}/>
                 <SubmitInfo title={'코드길이'} contents={`${Math.floor(code_size/1024)}KB`}/>
             </HistoryList.ItemContainer>
             {active && (

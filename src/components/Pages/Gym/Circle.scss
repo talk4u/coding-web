@@ -1,0 +1,24 @@
+.gym__item{
+  .CircularProgressbar{
+    .CircularProgressbar-path       { stroke: #6B29FB; }
+    .CircularProgressbar-trail      { stroke: #e1e1e7; }
+    .CircularProgressbar-text       { fill: #6B29FB; }
+    .CircularProgressbar-background { fill: transparent; }
+  }
+  &:hover{
+    .CircularProgressbar {
+      .CircularProgressbar-path {
+        stroke: #fff;
+      }
+      .CircularProgressbar-trail {
+        stroke: #b8a0fb;
+      }
+      .CircularProgressbar-text {
+        fill: #fff;
+      }
+      .CircularProgressbar-background {
+        fill: transparent;
+      }
+    }
+  }
+}

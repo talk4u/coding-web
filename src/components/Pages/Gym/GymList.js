@@ -1,5 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import CircularProgressbar from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import './Circle.css';
 import styled from 'styled-components'
 import {connect} from "react-redux";
 import {Link, Route} from 'react-router-dom'
@@ -29,6 +32,9 @@ GymItem.Title = styled.div`
     text-align: center;
     word-wrap: break-word;
     width: 100%;
+`
+GymItem.CircleContainer = styled.div`
+    padding: 2em;
 `
 const GymContainer = styled.div`
     display: flex;
@@ -63,9 +69,17 @@ export class GymListView extends React.Component{
             <GymContainer>
                 { gyms!==null &&
                     gyms.map(g=>
-                    <GymItem to={`${match.url}/${g.id}`}>
+                    <GymItem to={`${match.url}/${g.id}`} className={'gym__item'}>
                         <GymItem.Title>
+                            <GymItem.CircleContainer>
+                                <CircularProgressbar
+                                    percentage={g.problem_solved_count/g.problem_total_count*100}
+                                    strokeWidth={4}
+                                    initialAnimation={true}
+                                />
+                            </GymItem.CircleContainer>
                             {g.name}
+
                         </GymItem.Title>
                     </GymItem>)}
             </GymContainer>

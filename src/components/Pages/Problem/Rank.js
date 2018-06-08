@@ -128,7 +128,7 @@ class RankView extends React.Component{
                                 <RankItem.Rank>#{i+1}</RankItem.Rank>
                                 <RankItem.Item>{r.user_name}</RankItem.Item>
                                 <RankItem.Item phone_hide={true}>{Math.floor(r.memory_used_bytes/1024)}MB</RankItem.Item>
-                                <RankItem.Item>{r.time_elapsed_seconds}ms</RankItem.Item>
+                                <RankItem.Item>{r.time_elapsed_seconds}s</RankItem.Item>
                                 <RankItem.Item phone_hide={true}>{r.code_size}KB</RankItem.Item>
                                 <RankItem.Item phone_hide={true}>{created_str}</RankItem.Item>
                                 <RankItem.File>
