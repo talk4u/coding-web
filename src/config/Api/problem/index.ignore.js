@@ -15,6 +15,9 @@ export const problem = {
     },
     submission: (problem_id, submission_id) => {
         return fetchApi(`/problems/${problem_id}/submissions/${submission_id}/`, null, 'get')
+    },
+    post_submssion: (problem_id) => {
+        return fetchApi(`/problems/${problem_id}/submissions/`, null, 'post')
     }
 }
 

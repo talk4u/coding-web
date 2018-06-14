@@ -21,6 +21,11 @@ const initialState = {
         error: null,
         data: null
     },
+    submission: {
+        loading: false,
+        error: null,
+        data: null
+    }
 }
 
 const iterableState = (state, action) => {

@@ -73,7 +73,7 @@ export class GymListView extends React.Component{
                         <GymItem.Title>
                             <GymItem.CircleContainer>
                                 <CircularProgressbar
-                                    percentage={g.problem_solved_count/g.problem_total_count*100}
+                                    percentage={Math.round(g.problem_solved_count/g.problem_total_count*100)}
                                     strokeWidth={4}
                                     initialAnimation={true}
                                 />
