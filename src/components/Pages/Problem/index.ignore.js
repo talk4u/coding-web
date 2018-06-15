@@ -9,7 +9,7 @@ import Body from './Body';
 import History from "./History";
 import Rank from "./Rank";
 import ScoreBar from "../../Molecules/ScoreBar";
-import Button from "../../Atoms/Button";
+import Button from "../../Atoms/Button/index.ignore";
 import {problemBodyFetchRequested, problemUploadPostRequested} from "../../../actions/problem.ignore";
 import Dropzone from "react-dropzone";
 import tinycolor from 'tinycolor2'
