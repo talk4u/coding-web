@@ -20,7 +20,7 @@ const SignView = (props) => {
         <React.Fragment>
             <AppBar>Coding Talk</AppBar>
             <AppContent>
-                <SignForm  style={{maxWidth: '300px', height: '240px', margin:'20vh auto'}}/>
+                <SignForm  style={{maxWidth: '300px', minHeight: '240px', margin:'20vh auto'}}/>
             </AppContent>
         </React.Fragment>
     )

@@ -25,6 +25,11 @@ const initialState = {
         loading: false,
         error: null,
         data: null
+    },
+    upload: {
+        loading: false,
+        error: null,
+        data: null
     }
 }
 

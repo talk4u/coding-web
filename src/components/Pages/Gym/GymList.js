@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import {connect} from "react-redux";
 import {Link, Route} from 'react-router-dom'
 import {gymListFetchRequested} from "../../../actions/gym";
+import media from '../../Styles/media'
 
 const GymItem = styled(Link)`
     width: 240px;
@@ -42,6 +43,9 @@ const GymContainer = styled.div`
     align-items: center;
     flex-wrap: wrap;
     height: 100%;
+    ${media.phone`
+        padding: 2em 0;
+    `}
 `
 
 const mapStateToProps = (state, ownProps) => {

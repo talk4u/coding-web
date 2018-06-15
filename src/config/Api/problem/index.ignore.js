@@ -16,8 +16,25 @@ export const problem = {
     submission: (problem_id, submission_id) => {
         return fetchApi(`/problems/${problem_id}/submissions/${submission_id}/`, null, 'get')
     },
-    post_submssion: (problem_id) => {
-        return fetchApi(`/problems/${problem_id}/submissions/`, null, 'post')
+    upload: (problem_id, file) => {
+        let formData = new FormData();
+        const langMapper = {
+            'cpp': 'c++',
+            'java': 'java',
+            'py': 'python3',
+            'go': 'go',
+        }
+
+        if(!langMapper.hasOwnProperty(file.name.split('.')[file.name.split('.').length-1])){
+            throw{
+                data: 'No match File'
+            }
+        }
+
+        formData.append('lang', langMapper[file.name.split('.')[file.name.split('.').length-1]])
+        formData.append('submission_data', file)
+        console.log(formData)
+        return fetchApi(`/problems/${problem_id}/submissions/`, formData , 'post', {}, {}, 'multipart/form-data')
     }
 }
 

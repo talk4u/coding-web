@@ -10,9 +10,11 @@ import History from "./History";
 import Rank from "./Rank";
 import ScoreBar from "../../Molecules/ScoreBar";
 import Button from "../../Atoms/Button";
-import {problemBodyFetchRequested} from "../../../actions/problem.ignore";
+import {problemBodyFetchRequested, problemUploadPostRequested} from "../../../actions/problem.ignore";
 import Dropzone from "react-dropzone";
 import tinycolor from 'tinycolor2'
+import overlayStyles from "../../Styles";
+import Msg from '../../Atoms/Msg'
 
 const ProblemContainer = styled.div`
     display: flex;
@@ -52,6 +54,7 @@ const Sidebar = styled.aside`
         justify-content: space-evenly;
         background: #f1f1f5;
         padding: 0 1em;
+        ${overlayStyles.shadow}
     `}
 `
 Sidebar.Item = styled(Link)`
@@ -104,12 +107,14 @@ const StyledDropzone = styled(Dropzone)`
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        problem: state.problemReducer.body.data
+        problem: state.problemReducer.body.data,
+        upload: state.problemReducer.upload,
     }
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchProblem: (id) => dispatch(problemBodyFetchRequested(id))
+        fetchProblem: (id) => dispatch(problemBodyFetchRequested(id)),
+        postSubmission: (problemId, file) => dispatch(problemUploadPostRequested(problemId, file))
     }
 }
 
@@ -142,7 +147,8 @@ class ProblemView extends React.Component{
         })
     }
     submitCode(e){
-        e.stopPropagation()
+        e.stopPropagation();
+        this.props.postSubmission(this.props.problem.id, this.state.file);
         this.props.history.push(`${this.props.match.url}/history`);
     }
     render(){
@@ -156,7 +162,7 @@ class ProblemView extends React.Component{
                     <StyledScoreBar score={problem===null ? 0 : problem.max_score}/>
                     <StyledDropzone onDrop={this.onDrop}
                               multiple={false}
-                              style={{padding:'2em 0', margin:'1em 0', display:'flex', flexDirection:'column', borderRadius:'2px', textAlign:'center'}}
+                              style={{padding:'2em 0 0', margin:'1em 0', display:'flex', flexDirection:'column', borderRadius:'2px', textAlign:'center'}}
                               activeStyle={{border: `1px solid ${colors.purple}`}}
                     >
                         {this.state.file!==null ? (
@@ -170,8 +176,9 @@ class ProblemView extends React.Component{
                                 <Button size={'small'}> 업로드 </Button>
                             )}
                     </StyledDropzone>
-
-
+                    {this.props.upload.error!==null &&
+                        <Msg state={'error'}>지원하지 않는 파일입니다.</Msg>
+                    }
                 </Sidebar>
                 <Content>
                     <Route path={`${match.url}`} exact={true} component={props=><Body problemId={match.params.id} problem={problem} {...props}/>}/>
