@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import {Button, Icon, Modal} from "semantic-ui-react";
+import {Button, Icon, Loader, Modal} from "semantic-ui-react";
 import {colors} from "../../Layouts/var";
 import tinycolor from 'tinycolor2';
 import {problemRankFetchRequested, problemSubmissionFetchRequested} from "../../../actions/problem.ignore";
@@ -88,7 +88,8 @@ const FileButton = styled(Button)`
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        rank: state.problemReducer.rank.data
+        rank: state.problemReducer.rank.data,
+        submission: state.problemReducer.submission,
     }
 }
 
@@ -102,9 +103,9 @@ const mapDispatchToProps = (dispatch) => {
 
 class RankView extends React.Component{
     constructor(props){
-        super(props)
+        super(props);
         const {problemId} = this.props;
-        this.props.fetchRank(problemId)
+        this.props.fetchRank(problemId);
     }
 
     render(){
@@ -132,15 +133,25 @@ class RankView extends React.Component{
                                 <RankItem.Item phone_hide={true}>{r.code_size}KB</RankItem.Item>
                                 <RankItem.Item phone_hide={true}>{created_str}</RankItem.Item>
                                 <RankItem.File>
-                                    <Modal dimmer={'inverted'} trigger={<FileButton circular icon='code' onClick={()=>this.props.fetchSubmission(this.props.problemId, r.submission_id)} />}>
+                                    <Modal dimmer={'inverted'}
+                                           trigger={<FileButton circular icon='code' onClick={()=>this.props.fetchSubmission(this.props.problemId, r.submission_id)} />}>
                                         <Modal.Content>
-                                            <CodeMirror
-                                                value={'public static void main;'}
-                                                options={{
-                                                    lineNumbers:true,
-                                                    mode: 'text/x-java'
-                                                }}
-                                            />
+                                            {this.props.submission.loading ?
+                                                <Loader active/>
+                                                    :
+                                                this.props.submission.data!==null &&
+                                                <CodeMirror
+                                                    value={this.props.submission.data.submission_code}
+                                                    options={{
+                                                        lineNumbers:true,
+                                                        height: '100%',
+                                                        mode: this.props.submission.data.lang,
+                                                        readOnly: true,
+                                                        fixedGutter: false
+                                                    }}
+                                                />
+                                            }
+
                                         </Modal.Content>
 
                                     </Modal>

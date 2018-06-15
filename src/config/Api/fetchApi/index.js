@@ -33,9 +33,8 @@ const fetchApi = (endPoint, payload={}, method='get', config={}, headers={}, con
                 }
             }else{
                 throw {
-                    status: err.response.status,
-                    data: requestStack
-                }
+                    ...err.response
+                };
             }
 
         })

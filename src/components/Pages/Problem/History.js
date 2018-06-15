@@ -263,15 +263,15 @@ const SubmitStatusMessage = ({message}) => {
 
 const SubmitDetail = ({source:{detail:{detail:test_cases}, file}}) => {
     const panes = [
-        { menuItem: <StyledMenuItem key='tab1'>Tab1</StyledMenuItem>, render: () =>
+        { menuItem: <StyledMenuItem key='tab1'>점수표</StyledMenuItem>, render: () =>
                 <HistoryList.Detail.Pane>
                     {test_cases.map((test, t_i)=>(
                         <TestCase key={t_i}>
                             <TestCase.Title title={`test ${t_i+1}`} score={test.score} perfect={test.score!==0}/>
                             {test.testcases.map((t_case, t_c_i) => (
                                 <TestCase.Result key={t_c_i}>
-                                    <span>{t_case.time_elapsed_seconds}</span>
-                                    <span>{t_case.memory_used_bytes}</span>
+                                    <span>{t_case.time_elapsed_seconds}s</span>
+                                    <span>{Math.floor(t_case.memory_used_bytes/1024/1024)}MB</span>
                                     <span>{t_case.status}</span>
                                 </TestCase.Result>
                             ))}
@@ -279,7 +279,7 @@ const SubmitDetail = ({source:{detail:{detail:test_cases}, file}}) => {
                     ))}
                 </HistoryList.Detail.Pane>
         },
-        { menuItem:  <StyledMenuItem key='tab2'>Tab2</StyledMenuItem>, render: () =>
+        { menuItem:  <StyledMenuItem key='tab2'>제출파일</StyledMenuItem>, render: () =>
                 <HistoryList.Detail.Pane wide={true} attached={false}>
                     <CodeMirror
                         value={file.submission_code}

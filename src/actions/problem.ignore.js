@@ -16,6 +16,9 @@ export const types = {
     RANK_FETCH_FAILURE: "PROBLEM/RANK/FETCH/FAILURE",
     HISTORY_POLL_START: "PROBLEM/HISTORY/POLL/START",
     HISTORY_POLL_STOP: "PROBLEM/HISTORY/POLL/STOP",
+    UPLOAD_POST_REQUEST: "PROBLEM/UPLOAD/POST/REQUEST",
+    UPLOAD_POST_SUCCESS: "PROBLEM/UPLOAD/POST/SUCCESS",
+    UPLOAD_POST_FAILURE: "PROBLEM/UPLOAD/POST/FAILURE",
 }
 
 
@@ -145,5 +148,29 @@ export const problemHistoryPollStart = (problem_id) => {
 export const problemHistoryPollStop = () => {
     return{
         type: types.HISTORY_POLL_STOP
+    }
+}
+
+export const problemUploadPostRequested = (problemId, file) => {
+    return {
+        type: types.UPLOAD_POST_REQUEST,
+        payload: {
+            problemId,
+            file
+        }
+    }
+}
+
+export const problemUploadPostSuccess = (uploaded) => {
+    return {
+        type: types.UPLOAD_POST_SUCCESS,
+        payload: uploaded,
+    }
+}
+
+export const problemUploadPostFail = (error) => {
+    return {
+        type: types.UPLOAD_POST_FAILURE,
+        payload: error
     }
 }

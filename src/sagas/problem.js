@@ -13,7 +13,7 @@ import {
     problemSubmissionFetchFail,
     problemJudgeFetchSuccess,
     problemJudgeFetchFail,
-    problemHistoryPollStop
+    problemHistoryPollStop, problemUploadPostSuccess, problemUploadPostFail
 } from "../actions/problem.ignore";
 
 
@@ -82,7 +82,7 @@ function* pollHistoryList({type, payload}) {
             }
         } catch (error) {
             yield put(problemHistoryFetchFail(error));
-            if(error.status===401){
+            if(error.status===401 || error.status===404 ||error.status===400 ){
                 yield put(problemHistoryPollStop());
             }else{
                 yield call(delay, 1000);
@@ -129,6 +129,22 @@ function* fetchProblemSubmissionAsync({type, payload:{problemId, submissionId}})
 export function* watchFetchProblemSubmissionAsync() {
     yield takeLatest(actionType.SUBMISSION_FETCH_REQUEST, fetchProblemSubmissionAsync)
 }
+
+
+function* postProblemUploadAsync({type, payload}) {
+    try{
+        const upload = yield call(Api.problem.upload, payload.problemId, payload.file)
+
+        yield put(problemUploadPostSuccess(upload))
+    } catch (error) {
+        yield put(problemUploadPostFail(error))
+    }
+}
+
+export function* watchPostProblemUploadAsync() {
+    yield takeLatest(actionType.UPLOAD_POST_REQUEST, postProblemUploadAsync)
+}
+
 
 /* TODO
  * fetch Problem Body

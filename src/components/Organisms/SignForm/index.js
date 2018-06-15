@@ -7,6 +7,7 @@ import Form from '../../Atoms/Form'
 import overlayStyles from '../../Styles'
 import Button from '../../Atoms/Button/index.ignore'
 import {colors} from '../../Layouts/var'
+import Msg from '../../Atoms/Msg'
 
 export const SignPlane = styled(Form)`
     display: flex;
@@ -32,6 +33,11 @@ const SignButton = styled(Button)`
 `
 
 
+const mapStateToProps = (state, ownProps) => {
+    return {
+        auth: state.authReducer
+    }
+}
 const mapDispatchToProps = (dispatch) => {
     return {
         handleSubmit: ({username, password}) => dispatch(loginRequested({username, password}))
@@ -64,7 +70,7 @@ export class SignView extends React.Component{
 
 
     render(){
-        const {style, ...rest} = this.props;
+        const {style, auth:{loading, error}, ...rest} = this.props;
         return(
             <SignPlane onSubmit={(e)=>{
                 this.handleSubmit()
@@ -79,6 +85,7 @@ export class SignView extends React.Component{
                     <input type="password" name="password" placeholder="password" onChange={this.handleChange}/>
                 </SignFormField>
                 <SignButton type="submit" color={colors.purple} fluid={true}>로그인</SignButton>
+                {error!==null && <Msg style={{padding: '0.8em 1em 0'}} state={'error'}>아이디 또는 비밀번호를 확인해주세요</Msg>}
             </SignPlane>
 
         )
@@ -86,7 +93,7 @@ export class SignView extends React.Component{
 }
 
 const SignForm = connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(SignView)
 export default SignForm
