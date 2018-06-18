@@ -44,6 +44,7 @@ export const problemBodyFetchFail = (error) => {
 }
 
 export const problemHistoryFetchRequested = (id) => {
+    console.log(id)
     return {
         type: types.HISTORY_FETCH_REQUEST,
         payload: id,

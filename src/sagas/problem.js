@@ -72,7 +72,7 @@ export function* watchFetchProblemJudgeAsync() {
 function* pollHistoryList({type, payload}) {
     while(true){
         try{
-            const history = yield call(Api.problem.history, payload);
+            const history = yield call(Api.problem.history, payload.id);
             const now_grading = history.filter(judge => judge.status==='ENQ' || judge.status==='IP');
             yield put(problemHistoryFetchSuccess(history));
             if(now_grading.length === 0){

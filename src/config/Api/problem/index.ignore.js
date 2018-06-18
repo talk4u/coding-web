@@ -33,6 +33,7 @@ export const problem = {
 
         formData.append('lang', langMapper[file.name.split('.')[file.name.split('.').length-1]])
         formData.append('submission_data', file)
+        formData.append('problem', problem_id)
         console.log(formData)
         return fetchApi(`/problems/${problem_id}/submissions/`, formData , 'post', {}, {}, 'multipart/form-data')
     }
