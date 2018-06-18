@@ -72,8 +72,8 @@ export class GymListView extends React.Component{
         return(
             <GymContainer>
                 { gyms!==null &&
-                    gyms.map(g=>
-                    <GymItem to={`${match.url}/${g.id}`} className={'gym__item'}>
+                    gyms.map((g, g_i)=>
+                    <GymItem key={g_i} to={`${match.url}/${g.id}`} className={'gym__item'}>
                         <GymItem.Title>
                             <GymItem.CircleContainer>
                                 <CircularProgressbar

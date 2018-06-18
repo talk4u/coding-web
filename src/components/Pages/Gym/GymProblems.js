@@ -193,7 +193,7 @@ export class GymProblemsView extends React.Component{
                         <Gym.Title>{gym.data.title}</Gym.Title>
                         <Gym.Info>
                             {gym.data.recently_showed_users.map((user, ui) => (
-                                <User>{user.name[0]}</User>
+                                <User key={ui}>{user.name[0]}</User>
                             ))}
                             {gym.data.recently_showed_users.length>3 ? `외 ${gym.data.recently_showed_users.length-3}명` : ''}이 풀고 있습니다.
                         </Gym.Info>

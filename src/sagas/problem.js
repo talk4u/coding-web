@@ -75,11 +75,11 @@ function* pollHistoryList({type, payload}) {
             const history = yield call(Api.problem.history, payload.id);
             const now_grading = history.filter(judge => judge.status==='ENQ' || judge.status==='IP');
             yield put(problemHistoryFetchSuccess(history));
-            if(now_grading.length === 0){
-                yield put(problemHistoryPollStop());
-            }else{
+            // if(now_grading.length === 0){
+            //     yield put(problemHistoryPollStop());
+            // }else{
                 yield call(delay, 1000);
-            }
+            // }
         } catch (error) {
             yield put(problemHistoryFetchFail(error));
             if(error.status===401 || error.status===404 ||error.status===400 ){

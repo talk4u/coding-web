@@ -13,12 +13,21 @@ import {Icon, Modal} from "semantic-ui-react";
 import SignForm from "../../Organisms/SignForm";
 import Button from "../../Atoms/Button/index.ignore";
 import {colors} from "../../Layouts/var";
+import Logo from "../../Atoms/Logo";
+import LogoLetter from "../../Atoms/LogoLetter";
+import media from '../../Styles/media';
 
 const StyledMenu = styled(Link)`
     color: #fff;
 `
 const LogoutButton = styled(Button)`
     margin: 0 0 0 auto;
+`
+const StyledLogoLetter = styled(LogoLetter)`
+    height: 3em;
+    ${media.phone`
+        height: 2em;
+    `}
 `
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -46,7 +55,7 @@ export class PrivateView extends React.Component{
                 <ThemeProvider theme={darkTheme}>
                     <AppBar>
                         <Switch>
-                            <Route path={`${match.url}gym`} exact={true} component={()=><span>Coding Talk</span>}/>
+                            <Route path={`${match.url}gym`} exact={true} component={()=><StyledLogoLetter/>}/>
                             <Route component={()=><StyledMenu to={`${match.url}gym`}><Icon name='arrow left'/>Go to GYM</StyledMenu>}/>
                         </Switch>
 

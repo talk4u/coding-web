@@ -84,6 +84,13 @@ const FileButton = styled(Button)`
     
 `
 
+const EmptyMsg = styled.div`
+    padding: 2em;
+    color: #959595;
+    font-size: 2em;
+    text-align: center;
+    
+`
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -110,57 +117,76 @@ class RankView extends React.Component{
 
     render(){
         const {rank} = this.props;
-        return(
-            <RankWrapper>
-                <RankList heading={true}>
-                    <RankItem.Item>푼사람</RankItem.Item>
-                    <RankItem.Item phone_hide={true}>메모리</RankItem.Item>
-                    <RankItem.Item>수행시간</RankItem.Item>
-                    <RankItem.Item phone_hide={true}>코드길이</RankItem.Item>
-                    <RankItem.Item phone_hide={true}>제출 날짜</RankItem.Item>
-                </RankList>
-                {
-                    rank!==null &&
-                    rank.map((r,i) => {
-                        const time = moment(r.created_at);
-                        const created_str =`${time.get('year')} ${time.get('month')}/${time.get('date')} ${time.get('hour')}:${time.get('minute')}:${time.get('second')}`
-                        return (
-                            <RankList key={i}>
-                                <RankItem.Rank>#{i+1}</RankItem.Rank>
-                                <RankItem.Item>{r.user_name}</RankItem.Item>
-                                <RankItem.Item phone_hide={true}>{Math.floor(r.memory_used_bytes/1024)}MB</RankItem.Item>
-                                <RankItem.Item>{r.time_elapsed_seconds}s</RankItem.Item>
-                                <RankItem.Item phone_hide={true}>{r.code_size}KB</RankItem.Item>
-                                <RankItem.Item phone_hide={true}>{created_str}</RankItem.Item>
-                                <RankItem.File>
-                                    <Modal dimmer={'inverted'}
-                                           trigger={<FileButton circular icon='code' onClick={()=>this.props.fetchSubmission(this.props.problemId, r.submission_id)} />}>
-                                        <Modal.Content>
-                                            {this.props.submission.loading ?
-                                                <Loader active/>
-                                                    :
-                                                this.props.submission.data!==null &&
-                                                <CodeMirror
-                                                    value={this.props.submission.data.submission_code}
-                                                    options={{
-                                                        lineNumbers:true,
-                                                        height: '100%',
-                                                        mode: this.props.submission.data.lang,
-                                                        readOnly: true,
-                                                        fixedGutter: false
-                                                    }}
-                                                />
-                                            }
+        if(rank===null){
+            return(
+                <Loader active={true}/>
+            )
+        }else{
+            return(
+                <RankWrapper>
+                    {
+                        rank.length>0 ?
+                            (
+                                <React.Fragment>
+                                    <RankList heading={true}>
+                                        <RankItem.Item>푼사람</RankItem.Item>
+                                        <RankItem.Item phone_hide={true}>메모리</RankItem.Item>
+                                        <RankItem.Item>수행시간</RankItem.Item>
+                                        <RankItem.Item phone_hide={true}>코드길이</RankItem.Item>
+                                        <RankItem.Item phone_hide={true}>제출 날짜</RankItem.Item>
+                                    </RankList>
+                                    {
+                                        rank.map((r,i) => {
+                                            const time = moment(r.created_at);
+                                            const created_str =`${time.get('year')} ${time.get('month')}/${time.get('date')} ${time.get('hour')}:${time.get('minute')}:${time.get('second')}`
+                                            return (
+                                                <RankList key={i}>
+                                                    <RankItem.Rank>#{i+1}</RankItem.Rank>
+                                                    <RankItem.Item>{r.user_name}</RankItem.Item>
+                                                    <RankItem.Item phone_hide={true}>{Math.floor(r.memory_used_bytes/1024)}MB</RankItem.Item>
+                                                    <RankItem.Item>{r.time_elapsed_seconds}s</RankItem.Item>
+                                                    <RankItem.Item phone_hide={true}>{r.code_size}KB</RankItem.Item>
+                                                    <RankItem.Item phone_hide={true}>{created_str}</RankItem.Item>
+                                                    <RankItem.File>
+                                                        <Modal dimmer={'inverted'}
+                                                               trigger={<FileButton circular icon='code' onClick={()=>this.props.fetchSubmission(this.props.problemId, r.submission_id)} />}>
+                                                            <Modal.Content>
+                                                                {this.props.submission.loading ?
+                                                                    <Loader active/>
+                                                                    :
+                                                                    this.props.submission.data!==null &&
+                                                                    <CodeMirror
+                                                                        value={this.props.submission.data.submission_code}
+                                                                        options={{
+                                                                            lineNumbers:true,
+                                                                            height: '100%',
+                                                                            mode: this.props.submission.data.lang,
+                                                                            readOnly: true,
+                                                                            fixedGutter: false
+                                                                        }}
+                                                                    />
+                                                                }
 
-                                        </Modal.Content>
+                                                            </Modal.Content>
 
-                                    </Modal>
-                                </RankItem.File>
-                            </RankList>
-                        )})
-                }
-            </RankWrapper>
-        )
+                                                        </Modal>
+                                                    </RankItem.File>
+                                                </RankList>
+                                            )})
+                                    }
+                                </React.Fragment>
+                            ):
+                            (
+                                <EmptyMsg>
+                                    <Icon size={'large'} name={'trophy'}/>
+                                    <div style={{marginTop: '1em'}}>제일 먼저 만점을 받아보세요</div>
+                                </EmptyMsg>
+                            )
+                    }
+                </RankWrapper>
+            )
+        }
+
     }
 }
 

@@ -3,7 +3,7 @@ import styled, {keyframes} from 'styled-components'
 import {connect} from 'react-redux'
 import media from "../../Styles/media";
 import {colors} from '../../Layouts/var';
-import {Loader, Menu, Tab} from "semantic-ui-react";
+import {Icon, Loader, Menu, Tab} from "semantic-ui-react";
 import tinycolor from 'tinycolor2'
 import isEqual from 'lodash/isEqual';
 import {
@@ -158,6 +158,14 @@ TestCase.Result = styled.div`
     }
 `
 
+const EmptyMsg = styled.div`
+    padding: 2em;
+    color: #959595;
+    font-size: 2em;
+    text-align: center;
+    
+`
+
 const GradingCircle = ({size, score, active}) => {
     const randId = `clipper_${Math.floor(Math.random()*10000)}`;
     const CircleContainer = styled.div`
@@ -187,9 +195,9 @@ const GradingCircle = ({size, score, active}) => {
           width: 100%;
           height: 100%;
           border-radius: 50%;
-          background-image: ${active ? 
-            `linear-gradient(to bottom left, ${colors.yellow} 20%, ${colors.purple} 100%)` 
-            : `linear-gradient(to bottom left, #e1e1e7 20%, #d1d1d7 100%)`};
+          background-image: ${active ?
+        `linear-gradient(to bottom left, ${colors.yellow} 20%, ${colors.purple} 100%)`
+        : `linear-gradient(to bottom left, #e1e1e7 20%, #d1d1d7 100%)`};
           -webkit-clip-path: url(#clipper);
           clip-path: url(#${randId});
           ${active ? `
@@ -356,6 +364,8 @@ class OnJudging extends React.Component{
 
 }
 
+
+
 const HistoryGraded = ({summary, active, viewDetail, index, detail}) => {
     const {status, score, memory_used_bytes, time_elapsed_seconds, code_size, submission_id, id:judge_id } = summary;
     const {message, color} = getMetaFromStatus(summary);
@@ -414,40 +424,45 @@ class HistoryView extends React.Component{
 
     render(){
         const {histories, judgeDetail} = this.props;
+        const now_grading = !histories.loading && histories.data !== null ? histories.data.filter(({status}) =>
+            status === 'IP'
+            || status === 'ENQ')
+            .sort(({status}) => status==='ENQ') : []
+        const graded = !histories.loading && histories.data !== null ? histories.data.filter(({status}) =>
+            status !== 'IP'
+            && status !== 'ENQ') : []
+
         return(
             <HistoryContainer>
-                {!histories.loading && histories.data !== null &&
-                <React.Fragment>
-                    <HistoryList>
-                        {
-                            histories.data.filter(({status}) =>
-                                status === 'IP'
-                                || status === 'ENQ')
-                                .sort(({status}) => status==='ENQ')
-                                .map((judgeSummary, i) => (
-                                    <OnJudging key={i}
-                                               summary={judgeSummary}
-                                    />
-                                ))
-                        }
-                    </HistoryList>
-                    <HistoryList>
-                        {
-                            histories.data.filter(judgeSummary =>
-                                judgeSummary.status !== 'IP'
-                                && judgeSummary.status !== 'ENQ')
-                                .map((judgeSummary, i) => (
-                                    <HistoryGraded key={i}
-                                                   index={i}
-                                                   active={this.state.active === i}
-                                                   viewDetail={this.handleClick}
-                                                   summary={judgeSummary}
-                                                   detail={judgeDetail}
-                                    />
-                                ))
-                        }
-                    </HistoryList>
-                </React.Fragment>
+                {now_grading.length !== 0 &&
+                (<HistoryList>
+                    {now_grading.map((judgeSummary, i) => (
+                        <OnJudging key={i}
+                                   summary={judgeSummary}
+                        />
+                    ))}
+                </HistoryList>)
+                }
+
+                {graded.length !== 0 &&
+                (<HistoryList>
+                    {graded.map((judgeSummary, i) => (
+                        <HistoryGraded key={i}
+                                       index={i}
+                                       active={this.state.active === i}
+                                       viewDetail={this.handleClick}
+                                       summary={judgeSummary}
+                                       detail={judgeDetail}
+                        />
+                    ))}
+                </HistoryList>)
+                }
+
+                {graded.length==0 && now_grading==0 &&
+                    <EmptyMsg>
+                        <Icon size={'large'} name={'keyboard'}/>
+                        <div style={{marginTop: '1em'}}>아직 문제를 풀지 않았어요</div>
+                    </EmptyMsg>
                 }
             </HistoryContainer>
         )

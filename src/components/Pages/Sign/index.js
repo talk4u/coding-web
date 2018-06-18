@@ -18,7 +18,7 @@ export const SignView = (props) => {
     }
     return(
         <React.Fragment>
-            <AppBar>Coding Talk</AppBar>
+            <AppBar></AppBar>
             <AppContent>
                 <SignForm  style={{maxWidth: '300px', minHeight: '240px', margin:'20vh auto'}}/>
             </AppContent>

@@ -2,12 +2,23 @@ import React from 'react'
 import {loginRequested} from "../../../actions/auth";
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import styled, {css} from 'styled-components'
+import styled, {css, ThemeProvider} from 'styled-components'
 import Form from '../../Atoms/Form'
 import overlayStyles from '../../Styles'
 import Button from '../../Atoms/Button/index.ignore'
 import {colors} from '../../Layouts/var'
 import Msg from '../../Atoms/Msg'
+import Logo from '../../Atoms/Logo'
+import media from '../../Styles/media';
+import LogoLetter from "../../Atoms/LogoLetter";
+import {lightTheme} from "../../Layouts/AppBar/theme";
+
+
+const StyledLogoLetter = styled(LogoLetter)`
+    height: 4em;
+    margin-bottom: 1em;
+`
+
 
 export const SignPlane = styled(Form)`
     display: flex;
@@ -76,6 +87,9 @@ export class SignView extends React.Component{
                 this.handleSubmit()
                 e.preventDefault()
             }} style={style}>
+                <ThemeProvider theme={lightTheme}>
+                    <StyledLogoLetter/>
+                </ThemeProvider>
                 <SignFormField>
                     <label htmlFor="username">ID</label>
                     <input type="text" name="username" placeholder="id" onChange={this.handleChange} autoFocus={true}/>
