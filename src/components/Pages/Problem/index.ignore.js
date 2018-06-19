@@ -150,7 +150,7 @@ class ProblemView extends React.Component{
     }
     submitCode(e){
         e.stopPropagation();
-        this.props.postSubmission(this.props.problem.id, this.state.file);
+        this.props.postSubmission(this.props.problem.data.id, this.state.file);
         this.props.history.push(`${this.props.match.url}/history`);
     }
 
