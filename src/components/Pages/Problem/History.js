@@ -275,7 +275,7 @@ const SubmitDetail = ({source:{detail:{detail:test_cases}, file}}) => {
                 <HistoryList.Detail.Pane>
                     {test_cases.map((test, t_i)=>(
                         <TestCase key={t_i}>
-                            <TestCase.Title title={`test ${t_i+1}`} score={test.score} perfect={test.score!==0}/>
+                            <TestCase.Title title={`test ${t_i+1}`} score={test.score} perfect={test.score!=0}/>
                             {test.testcases.map((t_case, t_c_i) => (
                                 <TestCase.Result key={t_c_i}>
                                     <span>{t_case.time_elapsed_seconds}s</span>
@@ -424,48 +424,57 @@ class HistoryView extends React.Component{
 
     render(){
         const {histories, judgeDetail} = this.props;
-        const now_grading = !histories.loading && histories.data !== null ? histories.data.filter(({status}) =>
-            status === 'IP'
-            || status === 'ENQ')
-            .sort(({status}) => status==='ENQ') : []
-        const graded = !histories.loading && histories.data !== null ? histories.data.filter(({status}) =>
-            status !== 'IP'
-            && status !== 'ENQ') : []
 
-        return(
-            <HistoryContainer>
-                {now_grading.length !== 0 &&
-                (<HistoryList>
-                    {now_grading.map((judgeSummary, i) => (
-                        <OnJudging key={i}
-                                   summary={judgeSummary}
-                        />
-                    ))}
-                </HistoryList>)
-                }
 
-                {graded.length !== 0 &&
-                (<HistoryList>
-                    {graded.map((judgeSummary, i) => (
-                        <HistoryGraded key={i}
-                                       index={i}
-                                       active={this.state.active === i}
-                                       viewDetail={this.handleClick}
+        if(histories.loading){
+            return(
+               <Loader active={true} inline='centered'/>
+            )
+        }else{
+            const now_grading = !histories.loading && histories.data !== null ? histories.data.filter(({status}) =>
+                status === 'IP'
+                || status === 'ENQ')
+                .sort(({status}) => status==='ENQ') : []
+            const graded = !histories.loading && histories.data !== null ? histories.data.filter(({status}) =>
+                status !== 'IP'
+                && status !== 'ENQ') : []
+            return(
+                <HistoryContainer>
+                    {now_grading.length !== 0 &&
+                    (<HistoryList>
+                        {now_grading.map((judgeSummary, i) => (
+                            <OnJudging key={i}
                                        summary={judgeSummary}
-                                       detail={judgeDetail}
-                        />
-                    ))}
-                </HistoryList>)
-                }
+                            />
+                        ))}
+                    </HistoryList>)
+                    }
 
-                {graded.length==0 && now_grading==0 &&
+                    {graded.length !== 0 &&
+                    (<HistoryList>
+                        {graded.map((judgeSummary, i) => (
+                            <HistoryGraded key={i}
+                                           index={i}
+                                           active={this.state.active === i}
+                                           viewDetail={this.handleClick}
+                                           summary={judgeSummary}
+                                           detail={judgeDetail}
+                            />
+                        ))}
+                    </HistoryList>)
+                    }
+
+                    {graded.length==0 && now_grading==0 &&
                     <EmptyMsg>
                         <Icon size={'large'} name={'keyboard'}/>
                         <div style={{marginTop: '1em'}}>아직 문제를 풀지 않았어요</div>
                     </EmptyMsg>
-                }
-            </HistoryContainer>
-        )
+                    }
+                </HistoryContainer>
+            )
+        }
+
+
     }
 }
 

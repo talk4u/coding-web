@@ -4,11 +4,18 @@ import styled, {css} from 'styled-components'
 import {connect} from "react-redux";
 import {Link} from 'react-router-dom'
 import {gymDetailFetchRequested, gymListFetchRequested} from "../../../actions/gym";
-import {Loader} from "semantic-ui-react";
+import {Icon, Loader, Popup} from "semantic-ui-react";
 import ScoreBar from "../../Molecules/ScoreBar";
 import overlayStyles from '../../Styles';
 import media from '../../Styles/media';
+import {colors} from '../../Layouts/var.js';
 
+const EmptyMsg = styled.div`
+    padding: 2em;
+    color: #959595;
+    font-size: 2em;
+    text-align: center;   
+`
 const Gym = styled.div`
     max-width: 900px;
     margin: 0 auto;
@@ -183,6 +190,16 @@ export class GymProblemsView extends React.Component{
     }
 
     render(){
+        /**
+         * handle 404
+         */
+        if(this.props.gym.error!==null){
+            if(this.props.gym.error.hasOwnProperty('status') &&
+                (this.props.gym.error.status == 404 || this.props.gym.error.status == 403)){
+                this.props.history.goBack();
+            }
+        }
+
         const {gym} = this.props;
         return(
             <Gym>
@@ -193,22 +210,28 @@ export class GymProblemsView extends React.Component{
                         <Gym.Title>{gym.data.title}</Gym.Title>
                         <Gym.Info>
                             {gym.data.recently_showed_users.map((user, ui) => (
-                                <User key={ui}>{user.name[0]}</User>
+                                <Popup key={ui} trigger={<User key={ui}>{user.name[0]}</User>} content={user.name} inverted size='mini' />
                             ))}
                             {gym.data.recently_showed_users.length>3 ? `외 ${gym.data.recently_showed_users.length-3}명` : ''}이 풀고 있습니다.
                         </Gym.Info>
                         <ProblemsContainer>
-                            {gym.data.unsolved.map(p=>
+                            {gym.data.unsolved.length>0 ?
+                                gym.data.unsolved.map(p=>
                                 <Unsolved key={p.slug}>
                                     <Problem.Title to={`/problem/${p.id}`}>{p.name}</Problem.Title>
 
                                     <Problem.Info><ScoreBar style={{width:'80%'}} score={p.max_score}/></Problem.Info>
                                     <Problem.ActionContainer>
                                         <Problem.Action to={`/problem/${p.id}/rank`}>순위</Problem.Action>
-                                        <Problem.Action to={`/problem/${p.id}/history`}>파일</Problem.Action>
+                                        <Problem.Action to={`/problem/${p.id}/history`}>기록</Problem.Action>
                                     </Problem.ActionContainer>
-                                </Unsolved>
-                            )}
+                                </Unsolved>)
+                                :
+                                <EmptyMsg>
+                                    <Icon size={'large'} style={{color:colors.yellow}} name={'trophy'}/>
+                                    <div style={{marginTop: '1em'}}>다음 Gym에 도전해 보세요</div>
+                                </EmptyMsg>
+                            }
                         </ProblemsContainer>
                         <ProblemsContainer>
                             {gym.data.solved.map(p=>
@@ -217,7 +240,7 @@ export class GymProblemsView extends React.Component{
                                     <Problem.Info><ScoreBar style={{width:'80%'}} score={p.max_score}/></Problem.Info>
                                     <Problem.ActionContainer>
                                         <Problem.Action to={`/problem/${p.id}/rank`}>순위</Problem.Action>
-                                        <Problem.Action to={`/problem/${p.id}/history`}>파일</Problem.Action>
+                                        <Problem.Action to={`/problem/${p.id}/history`}>기록</Problem.Action>
                                     </Problem.ActionContainer>
                                 </Unsolved>
                             )}

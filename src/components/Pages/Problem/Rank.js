@@ -7,7 +7,7 @@ import tinycolor from 'tinycolor2';
 import {problemRankFetchRequested, problemSubmissionFetchRequested} from "../../../actions/problem.ignore";
 import media from "../../Styles/media";
 import moment from 'moment';
-import {UnControlled as CodeMirror} from "react-codemirror2";
+import CodeMirror from '../../Molecules/CodeMirror'
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/clike/clike';
 
@@ -122,6 +122,7 @@ class RankView extends React.Component{
                 <Loader active={true}/>
             )
         }else{
+            console.log(this.props)
             return(
                 <RankWrapper>
                     {
@@ -154,17 +155,18 @@ class RankView extends React.Component{
                                                                 {this.props.submission.loading ?
                                                                     <Loader active/>
                                                                     :
-                                                                    this.props.submission.data!==null &&
+                                                                    this.props.submission.data!==null ?
                                                                     <CodeMirror
                                                                         value={this.props.submission.data.submission_code}
                                                                         options={{
-                                                                            lineNumbers:true,
+                                                                            lineNumbers: true,
                                                                             height: '100%',
                                                                             mode: this.props.submission.data.lang,
                                                                             readOnly: true,
                                                                             fixedGutter: false
                                                                         }}
                                                                     />
+                                                                        :null
                                                                 }
 
                                                             </Modal.Content>

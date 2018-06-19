@@ -14,7 +14,7 @@ const fetchApi = (endPoint, payload={}, method='get', config={}, headers={}, con
     });
     const requestStack = [];
     instance.interceptors.request.use(config=>{
-        requestStack.push(config);
+        // requestStack.push(config);
         return config;
     })
     return instance.request({

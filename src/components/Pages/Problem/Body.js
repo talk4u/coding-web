@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {connect} from 'react-redux'
 import {problemBodyFetchRequested} from "../../../actions/problem.ignore";
 import Markdown from '../../Molecules/Markdown/';
-import {Header, Label} from "semantic-ui-react";
+import {Header, Label, Loader} from "semantic-ui-react";
 import media from "../../Styles/media";
 
 const BodyContainer = styled.div`
@@ -57,18 +57,18 @@ class Body extends React.Component{
     render(){
         return(
             <BodyContainer>
-                {this.props.problem!==null &&
+                {!this.props.problem.loading && this.props.problem.data!==null ?
                 <React.Fragment>
                     <ProblemHeader as={'h1'}>
-                        {this.props.problem.name}
+                        {this.props.problem.data.name}
                         <div>
                             <Label style={{marginLeft:0}} size={'small'}>
                                 메모리 제한
-                                <Label.Detail>{this.props.problem.mem_limit_bytes/1024/1024}MB</Label.Detail>
+                                <Label.Detail>{this.props.problem.data.mem_limit_bytes/1024/1024}MB</Label.Detail>
                             </Label>
                             <Label size={'small'}>
                                 시간 제한
-                                <Label.Detail>{this.props.problem.time_limit_seconds}초</Label.Detail>
+                                <Label.Detail>{this.props.problem.data.time_limit_seconds}초</Label.Detail>
                             </Label>
                         </div>
                     </ProblemHeader>
@@ -78,9 +78,10 @@ class Body extends React.Component{
                             html: true,
                             katex: true,
                         }}
-                        source={this.props.problem.description}/>
+                        source={this.props.problem.data.description}/>
                 </React.Fragment>
-
+                :
+                    <Loader active={true} inline='centered'/>
                 }
 
             </BodyContainer>
