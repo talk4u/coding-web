@@ -30,6 +30,10 @@ const initialState = {
         loading: false,
         error: null,
         data: null
+    },
+
+    score:{
+        data: 0
     }
 }
 
@@ -82,6 +86,16 @@ const iterableState = (state, action) => {
         }
     }
 
+    if(actionType.SCORE_UPDATE === action.type){
+        state = {
+            ...state,
+            score: {
+                ...state.score,
+                data: action.payload
+            }
+        }
+    }
+
     if(
         Object.keys(actionType).map(function(e) {
             return actionType[e]
@@ -91,6 +105,7 @@ const iterableState = (state, action) => {
     }else{
         return obj[action.type.split('/')[1]](action)
     }
+
 }
 
 

@@ -15,6 +15,7 @@ import Dropzone from "react-dropzone";
 import tinycolor from 'tinycolor2'
 import overlayStyles from "../../Styles";
 import Msg from '../../Atoms/Msg'
+import isEqual from "lodash/isEqual";
 
 const ProblemContainer = styled.div`
     display: flex;
@@ -107,8 +108,9 @@ const StyledDropzone = styled(Dropzone)`
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        problem: state.problemReducer.body.data,
+        problem: state.problemReducer.body,
         upload: state.problemReducer.upload,
+        score: state.problemReducer.score.data,
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -151,15 +153,24 @@ class ProblemView extends React.Component{
         this.props.postSubmission(this.props.problem.id, this.state.file);
         this.props.history.push(`${this.props.match.url}/history`);
     }
+
     render(){
-        const {match, location, problem} = this.props;
+        const {match, location, problem, score} = this.props;
+        /**
+         * handle 404
+         */
+        if(this.props.problem.error!==null)
+            if(this.props.problem.error.hasOwnProperty('status') &&
+                (this.props.problem.error.status == 404 || this.props.problem.error.status == 403)){
+                this.props.history.goBack();
+            }
         return(
             <ProblemContainer>
                 <Sidebar>
                     <SidebarLink to={`${match.url}`} label={'문제'} activeOnlyWhenExact={true}/>
                     <SidebarLink to={`${match.url}/history`} label={'히스토리'}/>
                     <SidebarLink to={`${match.url}/rank`} label={'순위'}/>
-                    <StyledScoreBar score={problem===null ? 0 : problem.max_score}/>
+                    <StyledScoreBar score={score}/>
                     <StyledDropzone onDrop={this.onDrop}
                               multiple={false}
                               style={{padding:'2em 0 0', margin:'1em 0', display:'flex', flexDirection:'column', borderRadius:'2px', textAlign:'center'}}

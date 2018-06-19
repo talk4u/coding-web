@@ -1,15 +1,22 @@
 import React from 'react';
-import {UnControlled} from "react-codemirror2";
+import {Controlled} from "react-codemirror2";
 import "codemirror/mode/go/go"
 import "codemirror/mode/python/python"
 import "codemirror/mode/clike/clike"
 
-const modeMapper = {
-    "java": 'text/x-java',
-    "c++": 'text/x-c++src',
-    "python3": 'text/x-python',
-    "go": 'text/x-go'
+const modeMapper = (key) => {
+    switch (key){
+        case "java":
+            return 'text/x-java'
+        case "c++":
+            return 'text/x-c++src'
+        case "python3":
+            return 'text/x-python'
+        case "go":
+            return'text/x-go'
+    }
 }
+
 
 
 const CodeMirror = ({options, ...rest}) => {
@@ -17,11 +24,11 @@ const CodeMirror = ({options, ...rest}) => {
         ...rest,
         options:{
             ...options,
-            mode: modeMapper[options.mode]
+            mode: modeMapper(options.mode)
         }
     }
     return (
-        <UnControlled
+        <Controlled
             {...props}
         />
     )

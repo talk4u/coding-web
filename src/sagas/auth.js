@@ -16,7 +16,7 @@ export function* authorize(username, password) {
         const reqs = yield select((state)=>state.exceptionReducer.reqs);
         yield put(handleException.clear());
         for(let i=0; i<reqs.length; i++){
-            yield call(reqs[0]);
+            yield call(reqs[i]);
         }
 
         return token

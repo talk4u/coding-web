@@ -19,6 +19,8 @@ export const types = {
     UPLOAD_POST_REQUEST: "PROBLEM/UPLOAD/POST/REQUEST",
     UPLOAD_POST_SUCCESS: "PROBLEM/UPLOAD/POST/SUCCESS",
     UPLOAD_POST_FAILURE: "PROBLEM/UPLOAD/POST/FAILURE",
+
+    SCORE_UPDATE: "PROBLEM/SCORE/UPDATE"
 }
 
 
@@ -44,7 +46,6 @@ export const problemBodyFetchFail = (error) => {
 }
 
 export const problemHistoryFetchRequested = (id) => {
-    console.log(id)
     return {
         type: types.HISTORY_FETCH_REQUEST,
         payload: id,
@@ -173,5 +174,12 @@ export const problemUploadPostFail = (error) => {
     return {
         type: types.UPLOAD_POST_FAILURE,
         payload: error
+    }
+}
+
+export const problemScoreUpdate = (score) => {
+    return {
+        type: types.SCORE_UPDATE,
+        payload: score
     }
 }

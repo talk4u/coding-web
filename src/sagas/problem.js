@@ -13,7 +13,7 @@ import {
     problemSubmissionFetchFail,
     problemJudgeFetchSuccess,
     problemJudgeFetchFail,
-    problemHistoryPollStop, problemUploadPostSuccess, problemUploadPostFail
+    problemHistoryPollStop, problemUploadPostSuccess, problemUploadPostFail, problemScoreUpdate
 } from "../actions/problem.ignore";
 
 
@@ -22,6 +22,7 @@ function* fetchProblemBodyAsync({type, payload}) {
         const problem = yield call(Api.problem.body, payload)
 
         yield put(problemBodyFetchSuccess(problem))
+        yield put(problemScoreUpdate(problem.max_score))
     } catch (error) {
         yield put(problemBodyFetchFail(error))
     }
@@ -73,13 +74,13 @@ function* pollHistoryList({type, payload}) {
     while(true){
         try{
             const history = yield call(Api.problem.history, payload.id);
-            const now_grading = history.filter(judge => judge.status==='ENQ' || judge.status==='IP');
             yield put(problemHistoryFetchSuccess(history));
-            // if(now_grading.length === 0){
-            //     yield put(problemHistoryPollStop());
-            // }else{
-                yield call(delay, 1000);
-            // }
+
+            if(history.length>0 && history[0].hasOwnProperty('score')){
+                const max_score = Math.max(...history.map(h=>h.score))
+                yield put(problemScoreUpdate(max_score))
+            }
+            yield call(delay, 1000);
         } catch (error) {
             yield put(problemHistoryFetchFail(error));
             if(error.status===401 || error.status===404 ||error.status===400 ){
